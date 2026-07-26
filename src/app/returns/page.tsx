@@ -17,14 +17,14 @@ export default function ReturnsPage() {
         {
           heading: '30-day returns',
           body: [
-            'If you are not completely satisfied, you can return your Pegasus mousepad within 30 days of delivery for a full refund of the product price.',
+            'If you are not completely satisfied, you can return your Pegaris mousepad within 30 days of delivery for a full refund of the product price.',
             'Items should be returned in a resaleable condition. Light use is fine — we understand you need to try the surface to know if it fits your play.',
           ],
         },
         {
           heading: 'How to start a return',
           body: [
-            'Email support@pegasus.gg with your order number and reason for return. We will send a prepaid label and instructions within one business day.',
+            'Email support@pegaris.gg with your order number and reason for return. We will send a prepaid label and instructions within one business day.',
           ],
         },
         {

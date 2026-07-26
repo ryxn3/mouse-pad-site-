@@ -6,12 +6,12 @@ import { ContactForm } from '@/components/forms/ContactForm';
 export const metadata: Metadata = {
   title: 'Contact',
   description:
-    'Get in touch with the Pegasus team — questions about products, orders, warranty or anything else.',
+    'Get in touch with the Pegaris team — questions about products, orders, warranty or anything else.',
 };
 
 const CHANNELS = [
-  { icon: Mail, label: 'Email', value: 'support@pegasus.gg' },
-  { icon: MessageCircle, label: 'Discord', value: 'discord.gg/pegasus' },
+  { icon: Mail, label: 'Email', value: 'support@pegaris.gg' },
+  { icon: MessageCircle, label: 'Discord', value: 'discord.gg/pegaris' },
   { icon: Clock, label: 'Response time', value: 'Within 24 hours' },
 ];
 

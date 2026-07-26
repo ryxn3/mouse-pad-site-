@@ -8,7 +8,7 @@ import { withBasePath } from '@/lib/basePath';
  * Build a CanvasTexture from the supplied logo asset for use on the 3D pad.
  *
  * The original artwork is black-on-cream. To reproduce the real product — a
- * white Pegasus on matte black cloth — we render the logo to a canvas at
+ * white Pegaris on matte black cloth — we render the logo to a canvas at
  * display time: dark artwork pixels become opaque white, the light background
  * becomes transparent. The source file on disk is never altered.
  */

@@ -3,7 +3,7 @@ import { CheckoutForm } from '@/components/forms/CheckoutForm';
 
 export const metadata: Metadata = {
   title: 'Checkout',
-  description: 'Complete your Pegasus order — secure, fast, and simple.',
+  description: 'Complete your Pegaris order — secure, fast, and simple.',
 };
 
 export default function CheckoutPage() {

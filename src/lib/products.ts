@@ -13,8 +13,8 @@ import type {
 } from '@/types';
 
 export const PRODUCT: Product = {
-  id: 'pegasus-pro',
-  name: 'Pegasus Pro',
+  id: 'pegaris-pro',
+  name: 'Pegaris Pro',
   subtitle: 'Tournament-grade cloth mousepad',
   basePrice: 39,
 };
@@ -245,7 +245,7 @@ export const FAQ: FaqItem[] = [
   {
     question: 'Is the surface compatible with my mouse?',
     answer:
-      'Yes. Every Pegasus surface is calibrated for both optical and laser sensors across all major mouse brands, from low to very high DPI.',
+      'Yes. Every Pegaris surface is calibrated for both optical and laser sensors across all major mouse brands, from low to very high DPI.',
   },
   {
     question: 'How do I clean my mousepad?',
@@ -255,7 +255,7 @@ export const FAQ: FaqItem[] = [
   {
     question: 'What warranty is included?',
     answer:
-      'Every Pegasus mousepad is covered by a 2-year warranty against manufacturing defects, including stitching and base separation.',
+      'Every Pegaris mousepad is covered by a 2-year warranty against manufacturing defects, including stitching and base separation.',
   },
   {
     question: 'How long does shipping take?',
@@ -273,7 +273,7 @@ export const GALLERY: GalleryItem[] = [
   { id: 'g1', title: 'Micro-weave', caption: 'Macro cloth texture', kind: 'macro' },
   { id: 'g2', title: 'Rubber base', caption: 'Anti-slip natural rubber', kind: 'macro' },
   { id: 'g3', title: 'Stitched edge', caption: 'Anti-fray border detail', kind: 'macro' },
-  { id: 'g4', title: 'The mark', caption: 'The Pegasus, rendered in white', kind: 'render' },
+  { id: 'g4', title: 'The mark', caption: 'The Pegaris, rendered in white', kind: 'render' },
   { id: 'g5', title: 'Studio render', caption: 'Floating product study', kind: 'render' },
   { id: 'g6', title: 'The setup', caption: 'A professional FPS desk', kind: 'setup' },
 ];

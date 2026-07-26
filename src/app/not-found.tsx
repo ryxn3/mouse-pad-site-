@@ -8,7 +8,7 @@ export default function NotFound() {
       <div className="pointer-events-none absolute inset-0 bg-radial-glow opacity-50" />
       <Image
         src={withBasePath('/assets/logo.png')}
-        alt="Pegasus"
+        alt="Pegaris"
         width={80}
         height={80}
         className="logo-on-dark relative mb-8 opacity-80"

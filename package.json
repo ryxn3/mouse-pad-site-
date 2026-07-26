@@ -1,8 +1,8 @@
 {
-  "name": "pegasus-mousepads",
+  "name": "pegaris-mousepads",
   "version": "1.0.0",
   "private": true,
-  "description": "Pegasus — Premium Gaming Mousepads. Engineered for precision, built for victory.",
+  "description": "Pegaris — Premium Gaming Mousepads. Engineered for precision, built for victory.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

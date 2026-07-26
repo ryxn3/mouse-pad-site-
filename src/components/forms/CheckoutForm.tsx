@@ -99,7 +99,7 @@ export function CheckoutForm() {
         </span>
         <h2 className="heading-md">Order confirmed.</h2>
         <p className="mt-3 text-ink-muted">
-          Thank you for choosing Pegasus. A confirmation is on its way to your
+          Thank you for choosing Pegaris. A confirmation is on its way to your
           inbox — your gear ships within 24 hours.
         </p>
         <Link href="/products" className="btn-primary mt-8">
@@ -114,7 +114,7 @@ export function CheckoutForm() {
       <div className="mx-auto max-w-lg rounded-4xl border border-white/[0.06] bg-surface-raised/40 p-12 text-center">
         <h2 className="heading-md">Your cart is empty.</h2>
         <p className="mt-3 text-ink-muted">
-          Add a Pegasus Pro to your cart to check out.
+          Add a Pegaris Pro to your cart to check out.
         </p>
         <Link href="/products" className="btn-primary mt-8">
           Shop now

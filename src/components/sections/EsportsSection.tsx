@@ -65,7 +65,7 @@ export function EsportsSection() {
               {/* Desk mat / mousepad with peripherals */}
               <div className="relative mx-auto h-40 w-[85%] rounded-2xl border border-white/10 bg-gradient-to-b from-[#0c0c0c] to-[#070707] p-4 shadow-card">
                 <span className="absolute right-4 top-3 text-[10px] uppercase tracking-widest2 text-ink-faint">
-                  Pegasus Pro
+                  Pegaris Pro
                 </span>
                 {/* Keyboard */}
                 <div className="absolute bottom-4 left-6 grid grid-cols-8 gap-0.5 rounded-md border border-white/10 bg-surface-raised p-1.5">

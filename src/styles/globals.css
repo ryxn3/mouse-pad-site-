@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ------------------------------------------------------------------ */
-/*  Pegasus — global design system                                     */
+/*  Pegaris — global design system                                     */
 /* ------------------------------------------------------------------ */
 
 :root {
@@ -30,7 +30,7 @@ body {
 
 /* Faithful use of the supplied logo (black artwork) on dark surfaces.
    We do not modify the asset — we only invert it at render time so the
-   original Pegasus reads as white against the near-black UI. */
+   original Pegaris reads as white against the near-black UI. */
 .logo-on-dark {
   filter: invert(1) brightness(2);
 }

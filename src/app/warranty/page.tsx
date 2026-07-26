@@ -3,7 +3,7 @@ import { InfoPage } from '@/components/ui/InfoPage';
 
 export const metadata: Metadata = {
   title: 'Warranty',
-  description: 'The Pegasus 2-year warranty against manufacturing defects.',
+  description: 'The Pegaris 2-year warranty against manufacturing defects.',
 };
 
 export default function WarrantyPage() {
@@ -11,13 +11,13 @@ export default function WarrantyPage() {
     <InfoPage
       eyebrow="Support"
       title="Warranty"
-      description="Every Pegasus pad is backed by a 2-year warranty — because we build them to last."
+      description="Every Pegaris pad is backed by a 2-year warranty — because we build them to last."
       updated="July 2026"
       sections={[
         {
           heading: 'What is covered',
           body: [
-            'Your Pegasus mousepad is covered for 2 years from the date of purchase against manufacturing defects, including stitching failure, base separation and premature surface wear under normal use.',
+            'Your Pegaris mousepad is covered for 2 years from the date of purchase against manufacturing defects, including stitching failure, base separation and premature surface wear under normal use.',
           ],
         },
         {
@@ -29,7 +29,7 @@ export default function WarrantyPage() {
         {
           heading: 'Making a claim',
           body: [
-            'Contact support@pegasus.gg with your order number and a photo of the issue. If your claim is approved, we will repair or replace the product free of charge.',
+            'Contact support@pegaris.gg with your order number and a photo of the issue. If your claim is approved, we will repair or replace the product free of charge.',
           ],
         },
       ]}

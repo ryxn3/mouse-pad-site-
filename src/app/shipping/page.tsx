@@ -3,7 +3,7 @@ import { InfoPage } from '@/components/ui/InfoPage';
 
 export const metadata: Metadata = {
   title: 'Shipping',
-  description: 'Shipping options, timelines and costs for Pegasus orders.',
+  description: 'Shipping options, timelines and costs for Pegaris orders.',
 };
 
 export default function ShippingPage() {
@@ -36,7 +36,7 @@ export default function ShippingPage() {
         {
           heading: 'Tracking',
           body: [
-            'Every order is fully tracked. If your tracking has not updated within 48 hours of dispatch, contact support@pegasus.gg and we will look into it right away.',
+            'Every order is fully tracked. If your tracking has not updated within 48 hours of dispatch, contact support@pegaris.gg and we will look into it right away.',
           ],
         },
       ]}

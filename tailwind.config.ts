@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 /**
- * Pegasus design system.
+ * Pegaris design system.
  * A restrained luxury palette: near-black surfaces, deep crimson accent, white detail.
  * Motion and radii are tuned for a premium, understated feel.
  */

@@ -1,8 +1,8 @@
-# Pegasus — Premium Gaming Mousepads
+# Pegaris — Premium Gaming Mousepads
 
 > Engineered for precision. Built for victory.
 
-A production-ready ecommerce website for the Pegasus premium gaming mousepad
+A production-ready ecommerce website for the Pegaris premium gaming mousepad
 brand. Built with a restrained, luxury aesthetic — near-black surfaces, a deep
 crimson accent, and smooth, cinematic motion.
 
@@ -93,7 +93,7 @@ src/
 
 ## A note on the logo
 
-The supplied Pegasus logo (`public/assets/logo.png`) is used directly and
+The supplied Pegaris logo (`public/assets/logo.png`) is used directly and
 never modified. Because the artwork is black and the UI is near-black, it is
 inverted **at render time** — via the `.logo-on-dark` CSS filter and a
 canvas-based texture for the 3D pad — so the original mark reads as white

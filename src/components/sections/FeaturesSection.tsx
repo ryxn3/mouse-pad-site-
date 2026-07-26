@@ -13,7 +13,7 @@ export function FeaturesSection() {
       <SectionHeading
         eyebrow="Craftsmanship"
         title="Every detail, considered."
-        description="Ten reasons the Pegasus Pro feels different the moment you touch it — and stays that way for years."
+        description="Ten reasons the Pegaris Pro feels different the moment you touch it — and stays that way for years."
       />
 
       <motion.div

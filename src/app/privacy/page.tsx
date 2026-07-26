@@ -3,7 +3,7 @@ import { InfoPage } from '@/components/ui/InfoPage';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'How Pegasus collects, uses and protects your personal data.',
+  description: 'How Pegaris collects, uses and protects your personal data.',
 };
 
 export default function PrivacyPage() {
@@ -36,7 +36,7 @@ export default function PrivacyPage() {
         {
           heading: 'Your rights',
           body: [
-            'You may request a copy of your data, ask us to correct it, or request deletion at any time by contacting support@pegasus.gg.',
+            'You may request a copy of your data, ask us to correct it, or request deletion at any time by contacting support@pegaris.gg.',
           ],
         },
       ]}

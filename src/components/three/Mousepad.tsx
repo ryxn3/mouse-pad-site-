@@ -85,7 +85,7 @@ function StitchOutline({ w, h, y }: { w: number; h: number; y: number }) {
 }
 
 /**
- * The Pegasus Pro mousepad — a procedurally modelled cloth pad with rounded
+ * The Pegaris Pro mousepad — a procedurally modelled cloth pad with rounded
  * corners, a stitched border, matte fabric material and the brand logo in the
  * upper-right corner (matching the real product).
  */

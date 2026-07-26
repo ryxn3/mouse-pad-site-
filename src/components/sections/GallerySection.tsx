@@ -68,7 +68,7 @@ function GalleryVisual({ kind, index }: { kind: string; index: number }) {
         <div className="absolute inset-0 bg-radial-glow opacity-40" />
         <Image
           src={withBasePath('/assets/logo.png')}
-          alt="Pegasus mark"
+          alt="Pegaris mark"
           width={160}
           height={160}
           className="logo-on-dark relative w-1/2 max-w-[160px] opacity-90 transition-transform duration-700 group-hover:scale-110"
@@ -82,7 +82,7 @@ function GalleryVisual({ kind, index }: { kind: string; index: number }) {
       <div className="relative h-full min-h-[200px] w-full overflow-hidden bg-gradient-to-b from-[#0d0d0d] to-[#050505]">
         <Image
           src={withBasePath('/assets/mousepad-hero.png')}
-          alt="Pegasus mousepad"
+          alt="Pegaris mousepad"
           fill
           className="object-cover opacity-90 transition-transform duration-700 group-hover:scale-105"
         />

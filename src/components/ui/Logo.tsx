@@ -14,7 +14,7 @@ interface LogoProps {
 }
 
 /**
- * The Pegasus brand lockup. Uses the supplied logo asset directly.
+ * The Pegaris brand lockup. Uses the supplied logo asset directly.
  * On dark surfaces we invert it at render time (see `.logo-on-dark`) so the
  * original black artwork reads as white — the asset itself is never modified.
  */
@@ -29,7 +29,7 @@ export function Logo({
     <span className={cn('inline-flex items-center gap-3', className)}>
       <Image
         src={withBasePath('/assets/logo.png')}
-        alt="Pegasus"
+        alt="Pegaris"
         width={size}
         height={size}
         priority={priority}
@@ -38,7 +38,7 @@ export function Logo({
       />
       {withText && (
         <span className="font-display text-lg font-semibold tracking-[0.2em] text-ink">
-          PEGASUS
+          PEGARIS
         </span>
       )}
     </span>
@@ -46,7 +46,7 @@ export function Logo({
 
   if (href === null) return content;
   return (
-    <Link href={href} aria-label="Pegasus — home" className="inline-flex">
+    <Link href={href} aria-label="Pegaris — home" className="inline-flex">
       {content}
     </Link>
   );

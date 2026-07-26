@@ -54,7 +54,7 @@ export function CartDrawer() {
                 <ShoppingBag className="h-12 w-12 text-ink-faint" strokeWidth={1} />
                 <p className="text-ink-muted">Your cart is empty.</p>
                 <Link href="/products" onClick={closeCart} className="btn-primary mt-2">
-                  Shop Pegasus
+                  Shop Pegaris
                 </Link>
               </div>
             ) : (

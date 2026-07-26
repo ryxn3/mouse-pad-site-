@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { withBasePath } from '@/lib/basePath';
 
 /**
- * Premium intro loader: the Pegasus mark fades and rises out of black,
+ * Premium intro loader: the Pegaris mark fades and rises out of black,
  * a hairline progress sweep completes, then the screen dissolves into the site.
  * Shows once per session.
  */
@@ -14,13 +14,13 @@ export function LoadingScreen() {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && sessionStorage.getItem('pegasus-loaded')) {
+    if (typeof window !== 'undefined' && sessionStorage.getItem('pegaris-loaded')) {
       setVisible(false);
       return;
     }
     const timer = setTimeout(() => {
       setVisible(false);
-      sessionStorage.setItem('pegasus-loaded', '1');
+      sessionStorage.setItem('pegaris-loaded', '1');
     }, 2400);
     return () => clearTimeout(timer);
   }, []);
@@ -55,7 +55,7 @@ export function LoadingScreen() {
           >
             <Image
               src={withBasePath('/assets/logo.png')}
-              alt="Pegasus"
+              alt="Pegaris"
               width={120}
               height={120}
               priority
@@ -69,7 +69,7 @@ export function LoadingScreen() {
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             className="mt-6 font-display text-sm font-semibold uppercase tracking-widest2 text-ink"
           >
-            Pegasus
+            Pegaris
           </motion.p>
 
           <div className="mt-8 h-px w-40 overflow-hidden bg-white/10">

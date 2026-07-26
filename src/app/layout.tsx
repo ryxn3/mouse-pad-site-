@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     'premium mousepad',
     'speed control balance',
     'FPS mousepad',
-    'Pegasus',
+    'Pegaris',
   ],
   authors: [{ name: SITE.name }],
   icons: {

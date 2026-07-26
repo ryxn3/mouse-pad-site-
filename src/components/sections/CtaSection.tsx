@@ -22,7 +22,7 @@ export function CtaSection() {
 
         <Image
           src={withBasePath('/assets/logo.png')}
-          alt="Pegasus"
+          alt="Pegaris"
           width={72}
           height={72}
           className="logo-on-dark relative mx-auto mb-8 opacity-90"
@@ -31,7 +31,7 @@ export function CtaSection() {
           Your aim deserves the right foundation.
         </h2>
         <p className="relative mx-auto mt-5 max-w-lg text-ink-muted">
-          Configure your Pegasus Pro today. Free shipping over $75, 30-day
+          Configure your Pegaris Pro today. Free shipping over $75, 30-day
           returns, and a 2-year warranty.
         </p>
         <div className="relative mt-10 flex justify-center">

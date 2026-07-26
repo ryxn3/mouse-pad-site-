@@ -8,7 +8,7 @@ import { CtaSection } from '@/components/sections/CtaSection';
 export const metadata: Metadata = {
   title: 'Products',
   description:
-    'Configure your Pegasus Pro — choose Speed, Balance or Control, in two sizes, and inspect it in an interactive 3D viewer.',
+    'Configure your Pegaris Pro — choose Speed, Balance or Control, in two sizes, and inspect it in an interactive 3D viewer.',
 };
 
 export default function ProductsPage() {

@@ -11,7 +11,7 @@ import { specsFor } from '@/lib/products';
 export const metadata: Metadata = {
   title: 'Technology',
   description:
-    'The engineering behind Pegasus — micro-woven cloth, anti-fray stitching, a natural rubber base, and sensor-optimised surfaces.',
+    'The engineering behind Pegaris — micro-woven cloth, anti-fray stitching, a natural rubber base, and sensor-optimised surfaces.',
 };
 
 const LAYERS = [
@@ -46,7 +46,7 @@ export default function TechnologyPage() {
       <PageHeader
         eyebrow="Technology"
         title="Precision, layer by layer."
-        description="Every Pegasus pad is built from four engineered layers, each tuned to a single job — so the whole performs like nothing else."
+        description="Every Pegaris pad is built from four engineered layers, each tuned to a single job — so the whole performs like nothing else."
       />
 
       {/* Layers */}
@@ -106,7 +106,7 @@ export default function TechnologyPage() {
         <SectionHeading
           eyebrow="Specifications"
           title="The full spec sheet."
-          description="Pegasus Pro, Balance surface, Medium size. Specs adjust with your configuration on the product page."
+          description="Pegaris Pro, Balance surface, Medium size. Specs adjust with your configuration on the product page."
         />
         <div className="mx-auto mt-14 max-w-2xl overflow-hidden rounded-3xl border border-white/[0.06]">
           <dl className="divide-y divide-white/5">

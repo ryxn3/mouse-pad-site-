@@ -7,7 +7,7 @@ import { CtaSection } from '@/components/sections/CtaSection';
 export const metadata: Metadata = {
   title: 'Gallery',
   description:
-    'Macro cloth texture, the rubber base, stitched edges, floating renders and the professional setup — the Pegasus gallery.',
+    'Macro cloth texture, the rubber base, stitched edges, floating renders and the professional setup — the Pegaris gallery.',
 };
 
 export default function GalleryPage() {
