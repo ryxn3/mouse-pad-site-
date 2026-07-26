@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
 import { LoadingScreen } from '@/components/layout/LoadingScreen';
 import { SITE } from '@/lib/constants';
+import { withBasePath } from '@/lib/basePath';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -37,8 +38,8 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: SITE.name }],
   icons: {
-    icon: '/assets/logo.png',
-    apple: '/assets/logo.png',
+    icon: withBasePath('/assets/logo.png'),
+    apple: withBasePath('/assets/logo.png'),
   },
   openGraph: {
     title: `${SITE.name} — ${SITE.tagline}`,
@@ -46,6 +47,8 @@ export const metadata: Metadata = {
     url: SITE.url,
     siteName: SITE.name,
     type: 'website',
+    // metadataBase (SITE.url) already includes the Pages base path, so these
+    // root-relative paths resolve to the correct absolute URL.
     images: [{ url: '/assets/mousepad-hero.png', width: 1200, height: 630 }],
   },
   twitter: {

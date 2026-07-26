@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { withBasePath } from '@/lib/basePath';
 
 export default function NotFound() {
   return (
     <div className="relative flex min-h-[80svh] flex-col items-center justify-center px-6 text-center">
       <div className="pointer-events-none absolute inset-0 bg-radial-glow opacity-50" />
       <Image
-        src="/assets/logo.png"
+        src={withBasePath('/assets/logo.png')}
         alt="Pegasus"
         width={80}
         height={80}

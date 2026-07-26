@@ -6,6 +6,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { GALLERY } from '@/lib/products';
 import { staggerContainer, staggerItem } from '@/animations/variants';
 import { cn } from '@/lib/utils';
+import { withBasePath } from '@/lib/basePath';
 
 interface GallerySectionProps {
   bare?: boolean;
@@ -66,7 +67,7 @@ function GalleryVisual({ kind, index }: { kind: string; index: number }) {
       <div className="relative flex h-full min-h-[200px] w-full items-center justify-center bg-gradient-to-br from-surface-overlay to-background">
         <div className="absolute inset-0 bg-radial-glow opacity-40" />
         <Image
-          src="/assets/logo.png"
+          src={withBasePath('/assets/logo.png')}
           alt="Pegasus mark"
           width={160}
           height={160}
@@ -80,7 +81,7 @@ function GalleryVisual({ kind, index }: { kind: string; index: number }) {
     return (
       <div className="relative h-full min-h-[200px] w-full overflow-hidden bg-gradient-to-b from-[#0d0d0d] to-[#050505]">
         <Image
-          src="/assets/mousepad-hero.png"
+          src={withBasePath('/assets/mousepad-hero.png')}
           alt="Pegasus mousepad"
           fill
           className="object-cover opacity-90 transition-transform duration-700 group-hover:scale-105"

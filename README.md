@@ -26,11 +26,31 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
-npm run build   # production build
-npm run start   # serve the production build
+npm run build   # static export -> ./out
 npm run lint    # eslint
 npm run type-check
 ```
+
+> The site is configured for **static export** (`output: 'export'`), so
+> `npm run build` produces a fully static `./out` folder — no server required.
+> Preview it locally with any static server, e.g. `npx serve out`.
+
+## Deploying to GitHub Pages
+
+A workflow at `.github/workflows/deploy.yml` builds the static export and
+publishes it to GitHub Pages automatically.
+
+1. In the repository, go to **Settings → Pages** and set **Source** to
+   **GitHub Actions**.
+2. Push to `main` (or the current working branch) — the workflow builds and
+   deploys. You can also trigger it manually from the **Actions** tab
+   (**Run workflow**).
+3. The site goes live at `https://<user>.github.io/<repo>/`
+   (for this repo: `https://ryxn3.github.io/mouse-pad-site-/`).
+
+The workflow injects `NEXT_PUBLIC_BASE_PATH=/<repo>` at build time so all
+assets, routes and the 3D logo texture resolve correctly under the Pages
+sub-path. Locally the base path is empty, so the site runs from the root.
 
 ## Features
 

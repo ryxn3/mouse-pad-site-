@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { withBasePath } from '@/lib/basePath';
 
 interface LogoProps {
   /** Size of the mark in pixels. */
@@ -27,7 +28,7 @@ export function Logo({
   const content = (
     <span className={cn('inline-flex items-center gap-3', className)}>
       <Image
-        src="/assets/logo.png"
+        src={withBasePath('/assets/logo.png')}
         alt="Pegasus"
         width={size}
         height={size}

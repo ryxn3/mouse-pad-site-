@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { withBasePath } from '@/lib/basePath';
 
 /**
  * Premium intro loader: the Pegasus mark fades and rises out of black,
@@ -53,7 +54,7 @@ export function LoadingScreen() {
             className="relative"
           >
             <Image
-              src="/assets/logo.png"
+              src={withBasePath('/assets/logo.png')}
               alt="Pegasus"
               width={120}
               height={120}

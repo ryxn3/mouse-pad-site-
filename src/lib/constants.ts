@@ -3,7 +3,7 @@ export const SITE = {
   tagline: 'Engineered for precision. Built for victory.',
   description:
     'Pegasus crafts premium, tournament-grade gaming mousepads. Micro-woven cloth, anti-fray stitching, and a natural rubber base — engineered for precision, built for victory.',
-  url: 'https://pegasus-mousepads.example.com',
+  url: 'https://ryxn3.github.io/mouse-pad-site-',
 } as const;
 
 export interface NavLink {

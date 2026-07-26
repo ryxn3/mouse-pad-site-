@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import * as THREE from 'three';
+import { withBasePath } from '@/lib/basePath';
 
 /**
  * Build a CanvasTexture from the supplied logo asset for use on the 3D pad.
@@ -46,7 +47,7 @@ export function useLogoTexture(): THREE.CanvasTexture | null {
     let disposed = false;
     const image = new window.Image();
     image.crossOrigin = 'anonymous';
-    image.src = '/assets/logo.png';
+    image.src = withBasePath('/assets/logo.png');
     image.onload = () => {
       if (!disposed) setTexture(buildLogoTexture(image));
     };

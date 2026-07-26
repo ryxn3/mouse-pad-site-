@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { MagneticButton } from '@/components/ui/MagneticButton';
+import { withBasePath } from '@/lib/basePath';
 
 /** Closing call-to-action band. */
 export function CtaSection() {
@@ -20,7 +21,7 @@ export function CtaSection() {
         <div className="pointer-events-none absolute -bottom-20 left-1/2 h-64 w-[600px] -translate-x-1/2 rounded-full bg-crimson/10 blur-[120px]" />
 
         <Image
-          src="/assets/logo.png"
+          src={withBasePath('/assets/logo.png')}
           alt="Pegasus"
           width={72}
           height={72}
