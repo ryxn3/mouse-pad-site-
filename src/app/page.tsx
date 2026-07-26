@@ -3,7 +3,6 @@ import { Marquee } from '@/components/sections/Marquee';
 import { SurfacesSection } from '@/components/sections/SurfacesSection';
 import { FeaturesSection } from '@/components/sections/FeaturesSection';
 import { ComparisonSection } from '@/components/sections/ComparisonSection';
-import { EsportsSection } from '@/components/sections/EsportsSection';
 import { GallerySection } from '@/components/sections/GallerySection';
 import { QuizSection } from '@/components/sections/QuizSection';
 import { ReviewsSection } from '@/components/sections/ReviewsSection';
@@ -18,7 +17,6 @@ export default function HomePage() {
       <SurfacesSection />
       <FeaturesSection />
       <ComparisonSection />
-      <EsportsSection />
       <GallerySection />
       <QuizSection />
       <ReviewsSection />
