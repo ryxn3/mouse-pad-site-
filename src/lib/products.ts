@@ -271,7 +271,13 @@ export const FAQ: FaqItem[] = [
 
 export const GALLERY: GalleryItem[] = [
   { id: 'g1', title: 'Micro-weave', caption: 'Macro cloth texture', kind: 'macro' },
-  { id: 'g2', title: 'Rubber base', caption: 'Anti-slip natural rubber', kind: 'macro' },
+  {
+    id: 'g2',
+    title: 'Rubber base',
+    caption: 'Anti-slip natural rubber',
+    kind: 'macro',
+    image: '/assets/macro-rubber-base.png',
+  },
   { id: 'g3', title: 'Stitched edge', caption: 'Anti-fray border detail', kind: 'macro' },
   { id: 'g4', title: 'The mark', caption: 'The Pegaris, rendered in white', kind: 'render' },
   { id: 'g5', title: 'Studio render', caption: 'Floating product study', kind: 'render' },

@@ -73,6 +73,8 @@ export interface GalleryItem {
   caption: string;
   /** 'macro' | 'render' | 'setup' — controls layout emphasis. */
   kind: 'macro' | 'render' | 'setup';
+  /** Optional real photo (absolute path). Falls back to a procedural visual. */
+  image?: string;
 }
 
 /** A configured, purchasable line item. */

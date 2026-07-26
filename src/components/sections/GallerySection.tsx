@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { GALLERY } from '@/lib/products';
+import type { GalleryItem } from '@/types';
 import { staggerContainer, staggerItem } from '@/animations/variants';
 import { cn } from '@/lib/utils';
 import { withBasePath } from '@/lib/basePath';
@@ -44,7 +45,7 @@ export function GallerySection({ bare = false }: GallerySectionProps) {
               i === 3 && 'lg:col-span-1 lg:row-span-2',
             )}
           >
-            <GalleryVisual kind={item.kind} index={i} />
+            <GalleryVisual item={item} index={i} />
             <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/80 to-transparent p-5">
               <div>
                 <p className="font-display text-sm font-semibold text-ink">
@@ -60,8 +61,25 @@ export function GallerySection({ bare = false }: GallerySectionProps) {
   );
 }
 
-/** Renders a tactile visual per gallery tile without external photography. */
-function GalleryVisual({ kind, index }: { kind: string; index: number }) {
+/** Renders a real photo when the tile has one, else a tactile procedural visual. */
+function GalleryVisual({ item, index }: { item: GalleryItem; index: number }) {
+  const { kind, image, title } = item;
+
+  // Real photography takes priority when supplied.
+  if (image) {
+    return (
+      <div className="relative h-full min-h-[200px] w-full overflow-hidden bg-[#0a0a0a]">
+        <Image
+          src={withBasePath(image)}
+          alt={title}
+          fill
+          sizes="(max-width: 768px) 50vw, 33vw"
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+      </div>
+    );
+  }
+
   if (kind === 'render' || index === 3) {
     return (
       <div className="relative flex h-full min-h-[200px] w-full items-center justify-center bg-gradient-to-br from-surface-overlay to-background">
