@@ -60,6 +60,7 @@ export function CheckoutForm() {
   const { items, clear } = useCart();
   const subtotal = useCart(selectSubtotal);
   const [placed, setPlaced] = useState(false);
+  const [placedPreorder, setPlacedPreorder] = useState(false);
 
   const {
     register,
@@ -80,9 +81,11 @@ export function CheckoutForm() {
       : SHIPPING.standard;
   const tax = subtotal * 0.08;
   const total = subtotal + shippingCost + tax;
+  const hasPreorder = items.some((i) => i.preorder);
 
   const onSubmit = async () => {
     await new Promise((r) => setTimeout(r, 1200));
+    setPlacedPreorder(hasPreorder);
     clear();
     setPlaced(true);
   };
@@ -97,10 +100,13 @@ export function CheckoutForm() {
         <span className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-crimson/15">
           <Check className="h-8 w-8 text-crimson-soft" />
         </span>
-        <h2 className="heading-md">Order confirmed.</h2>
+        <h2 className="heading-md">
+          {placedPreorder ? 'Pre-order confirmed.' : 'Order confirmed.'}
+        </h2>
         <p className="mt-3 text-ink-muted">
-          Thank you for choosing Pegaris. A confirmation is on its way to your
-          inbox — your gear ships within 24 hours.
+          {placedPreorder
+            ? 'Thank you for choosing Pegaris. A confirmation is on its way to your inbox — we’ll let you know the moment your pre-order ships.'
+            : 'Thank you for choosing Pegaris. A confirmation is on its way to your inbox — your gear ships within 24 hours.'}
         </p>
         <Link href="/products" className="btn-primary mt-8">
           Continue shopping
@@ -284,8 +290,18 @@ export function CheckoutForm() {
 
           <button type="submit" disabled={isSubmitting} className="btn-primary mt-6 w-full">
             <Lock className="h-4 w-4" />
-            {isSubmitting ? 'Processing…' : `Pay ${formatPrice(total)}`}
+            {isSubmitting
+              ? 'Processing…'
+              : hasPreorder
+                ? `Place pre-order · ${formatPrice(total)}`
+                : `Pay ${formatPrice(total)}`}
           </button>
+          {hasPreorder && (
+            <p className="mt-3 text-center text-xs text-ink-faint">
+              This order contains a pre-order item. You won&apos;t be charged until
+              it ships.
+            </p>
+          )}
         </div>
       </aside>
     </form>

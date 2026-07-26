@@ -46,11 +46,23 @@ export interface SizeVariant {
   price: number;
 }
 
+export type ProductId = 'pro' | 'prism';
+
 export interface Product {
-  id: string;
+  id: ProductId;
   name: string;
   subtitle: string;
+  tagline: string;
+  /** Price of the Medium size; other sizes add their own increment. */
   basePrice: number;
+  /** Texture family used on the 3D pad: 'cloth' (woven) or 'pattern' (graphic). */
+  texturePrefix: 'cloth' | 'pattern';
+  /** Patterned pads map a single graphic; woven pads tile a weave. */
+  patterned: boolean;
+  /** Whether the product is currently pre-order only. */
+  preorder: boolean;
+  /** Extra cost over the base woven line. */
+  priceDelta: number;
 }
 
 export interface Specification {
@@ -95,6 +107,7 @@ export interface CartItem {
   id: string;
   productId: string;
   name: string;
+  preorder: boolean;
   surface: SurfaceId;
   surfaceName: string;
   size: SizeId;

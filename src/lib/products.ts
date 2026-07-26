@@ -12,14 +12,38 @@ import type {
   SizeId,
   ColorId,
   ColorVariant,
+  ProductId,
 } from '@/types';
 
-export const PRODUCT: Product = {
-  id: 'pegaris-pro',
-  name: 'Pegaris Pro',
-  subtitle: 'Tournament-grade cloth mousepad',
-  basePrice: 39,
+export const PRODUCTS: Record<ProductId, Product> = {
+  pro: {
+    id: 'pro',
+    name: 'Pegaris Pro',
+    subtitle: 'Tournament-grade cloth mousepad',
+    tagline: 'The signature woven pad.',
+    basePrice: 39,
+    texturePrefix: 'cloth',
+    patterned: false,
+    preorder: true,
+    priceDelta: 0,
+  },
+  prism: {
+    id: 'prism',
+    name: 'Pegaris Prism',
+    subtitle: 'Geometric edition mousepad',
+    tagline: 'A sculpted geometric surface.',
+    basePrice: 49,
+    texturePrefix: 'pattern',
+    patterned: true,
+    preorder: true,
+    priceDelta: 10,
+  },
 };
+
+export const PRODUCT_LIST: Product[] = [PRODUCTS.pro, PRODUCTS.prism];
+
+/** Default product, kept for existing references. */
+export const PRODUCT: Product = PRODUCTS.pro;
 
 export const SURFACES: Record<SurfaceId, SurfaceVariant> = {
   speed: {
@@ -99,9 +123,9 @@ export const PAD_COLOR_LIST: ColorVariant[] = [
   PAD_COLORS.purple,
 ];
 
-/** Compute the price for a given size (surface does not affect price). */
-export function priceFor(size: SizeId): number {
-  return SIZES[size].price;
+/** Compute the price for a size and product (surface does not affect price). */
+export function priceFor(size: SizeId, product: Product = PRODUCT): number {
+  return SIZES[size].price + product.priceDelta;
 }
 
 export function specsFor(surface: SurfaceId, size: SizeId): Specification[] {

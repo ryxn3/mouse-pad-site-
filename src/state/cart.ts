@@ -49,7 +49,7 @@ export const useCart = create<CartState>()(
       toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
     }),
     {
-      name: 'pegaris-cart-v2',
+      name: 'pegaris-cart-v3',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ items: state.items }),
     },

@@ -7,7 +7,8 @@ import { Check, ShoppingBag, RotateCcw, Move3d } from 'lucide-react';
 import { useConfigurator } from '@/state/configurator';
 import { useCart } from '@/state/cart';
 import {
-  PRODUCT,
+  PRODUCT_LIST,
+  PRODUCTS,
   SURFACE_LIST,
   SIZE_LIST,
   PAD_COLOR_LIST,
@@ -36,21 +37,24 @@ const ProductViewer = dynamic(
  * size selection, live specifications and an add-to-cart flow.
  */
 export function Configurator() {
-  const { surface, size, color, setSurface, setSize, setColor } = useConfigurator();
+  const { product, surface, size, color, setProduct, setSurface, setSize, setColor } =
+    useConfigurator();
   const addItem = useCart((s) => s.addItem);
   const [added, setAdded] = useState(false);
 
+  const prod = PRODUCTS[product];
   const surf = SURFACES[surface];
   const sz = SIZES[size];
   const col = PAD_COLORS[color];
-  const price = priceFor(size);
+  const price = priceFor(size, prod);
   const specs = specsFor(surface, size);
 
   const handleAdd = () => {
     addItem({
-      id: lineItemId(PRODUCT.id, surface, size, color),
-      productId: PRODUCT.id,
-      name: PRODUCT.name,
+      id: lineItemId(prod.id, surface, size, color),
+      productId: prod.id,
+      name: prod.name,
+      preorder: prod.preorder,
       surface,
       surfaceName: surf.name,
       size,
@@ -83,6 +87,8 @@ export function Configurator() {
                 surface={surface}
                 size={size}
                 color={color}
+                texturePrefix={prod.texturePrefix}
+                patterned={prod.patterned}
                 className="h-full w-full"
               />
               <div className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-4 rounded-full border border-white/10 bg-black/40 px-4 py-2 text-xs text-ink-muted backdrop-blur-md">
@@ -99,8 +105,44 @@ export function Configurator() {
 
         {/* Configuration panel */}
         <div className="flex flex-col">
-          <span className="eyebrow">{PRODUCT.subtitle}</span>
-          <h1 className="heading-lg mt-3 text-gradient">{PRODUCT.name}</h1>
+          {/* Product selector */}
+          <div className="mb-8 grid grid-cols-2 gap-3">
+            {PRODUCT_LIST.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => setProduct(p.id)}
+                className={cn(
+                  'rounded-2xl border p-4 text-left transition-all duration-300',
+                  product === p.id
+                    ? 'border-white/30 bg-white/[0.04]'
+                    : 'border-white/[0.06] hover:border-white/15',
+                )}
+              >
+                <span className="block font-display text-sm font-semibold">{p.name}</span>
+                <span className="mt-1 block text-xs text-ink-muted">{p.tagline}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="eyebrow">{prod.subtitle}</span>
+            {prod.preorder && (
+              <span className="rounded-full border border-crimson/40 bg-crimson/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-widest2 text-crimson-soft">
+                Pre-order
+              </span>
+            )}
+          </div>
+          <AnimatePresence mode="wait">
+            <motion.h1
+              key={prod.id}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              className="heading-lg mt-3 text-gradient"
+            >
+              {prod.name}
+            </motion.h1>
+          </AnimatePresence>
           <div className="mt-4 flex items-baseline gap-3">
             <AnimatePresence mode="wait">
               <motion.span
@@ -180,7 +222,7 @@ export function Configurator() {
                     {s.dimensions}
                   </span>
                   <span className="mt-2 block text-sm tabular-nums text-ink">
-                    {formatPrice(s.price)}
+                    {formatPrice(priceFor(s.id, prod))}
                   </span>
                 </button>
               ))}
@@ -244,12 +286,18 @@ export function Configurator() {
                   exit={{ opacity: 0 }}
                   className="flex items-center gap-2"
                 >
-                  <ShoppingBag className="h-5 w-5" /> Add to cart —{' '}
-                  {formatPrice(price)}
+                  <ShoppingBag className="h-5 w-5" />{' '}
+                  {prod.preorder ? 'Pre-order' : 'Add to cart'} — {formatPrice(price)}
                 </motion.span>
               )}
             </AnimatePresence>
           </button>
+          {prod.preorder && (
+            <p className="mt-3 text-center text-xs text-ink-faint">
+              Pre-order now · ships when the {prod.name} launches. You won&apos;t be
+              charged until it&apos;s on its way.
+            </p>
+          )}
 
           {/* Specifications */}
           <div className="mt-10">

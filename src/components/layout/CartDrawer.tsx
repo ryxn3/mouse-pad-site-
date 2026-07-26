@@ -80,7 +80,14 @@ export function CartDrawer() {
                         <div className="flex flex-1 flex-col gap-1">
                           <div className="flex items-start justify-between gap-2">
                             <div>
-                              <p className="text-sm font-medium text-ink">{item.name}</p>
+                              <div className="flex items-center gap-2">
+                                <p className="text-sm font-medium text-ink">{item.name}</p>
+                                {item.preorder && (
+                                  <span className="rounded-full border border-crimson/40 bg-crimson/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-crimson-soft">
+                                    Pre-order
+                                  </span>
+                                )}
+                              </div>
                               <p className="text-xs text-ink-muted">
                                 {item.colorName} · {item.surfaceName} · {item.dimensions}
                               </p>

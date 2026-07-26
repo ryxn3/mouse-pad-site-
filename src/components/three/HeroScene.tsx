@@ -6,13 +6,15 @@ import { ContactShadows, Float, Lightformer, Environment } from '@react-three/dr
 import * as THREE from 'three';
 import { Mousepad } from './Mousepad';
 import { useConfigurator } from '@/state/configurator';
+import { PRODUCTS } from '@/lib/products';
 import { usePrefersReducedMotion } from '@/hooks/useMediaQuery';
 import { lerp } from '@/lib/utils';
 
 /** Animated pad: slow rotation, gentle float, and a subtle tilt toward the cursor. */
 function AnimatedPad({ reduced }: { reduced: boolean }) {
   const group = useRef<THREE.Group>(null);
-  const { surface, size, color } = useConfigurator();
+  const { surface, size, color, product } = useConfigurator();
+  const prod = PRODUCTS[product];
 
   useFrame((state, delta) => {
     if (!group.current) return;
@@ -35,7 +37,13 @@ function AnimatedPad({ reduced }: { reduced: boolean }) {
         floatIntensity={reduced ? 0 : 0.6}
         floatingRange={[-0.08, 0.08]}
       >
-        <Mousepad surface={surface} size={size} color={color} />
+        <Mousepad
+          surface={surface}
+          size={size}
+          color={color}
+          texturePrefix={prod.texturePrefix}
+          patterned={prod.patterned}
+        />
       </Float>
     </group>
   );

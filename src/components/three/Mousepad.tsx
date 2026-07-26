@@ -12,6 +12,9 @@ interface MousepadProps {
   size: SizeId;
   surface: SurfaceId;
   color: ColorId;
+  /** Texture family: 'cloth' (woven, tiled) or 'pattern' (graphic, mapped once). */
+  texturePrefix?: 'cloth' | 'pattern';
+  patterned?: boolean;
 }
 
 /** A procedural fabric grain used as an immediate fallback for the pad surface. */
@@ -42,17 +45,20 @@ function makeProceduralFabric(): THREE.CanvasTexture {
  * selected colourway and tiles it across the pad; falls back to a procedural
  * grain until (or unless) it loads.
  */
-function useFabricTexture(color: ColorId): THREE.Texture {
+function useFabricTexture(
+  color: ColorId,
+  prefix: 'cloth' | 'pattern',
+  patterned: boolean,
+): THREE.Texture {
   const fallback = useMemo(makeProceduralFabric, []);
   const [texture, setTexture] = useState<THREE.Texture>(fallback);
 
   useEffect(() => {
     let active = true;
-    // Weave colourways tile as fabric; the red variant is a designed graphic
+    // Woven colourways tile as fabric; patterned pads are a designed graphic
     // that maps once across the whole pad.
-    const patterned = color === 'red';
     new THREE.TextureLoader().load(
-      withBasePath(`/textures/cloth-${color}.png`),
+      withBasePath(`/textures/${prefix}-${color}.png`),
       (tex) => {
         if (!active) return;
         if (patterned) {
@@ -70,7 +76,7 @@ function useFabricTexture(color: ColorId): THREE.Texture {
     return () => {
       active = false;
     };
-  }, [color]);
+  }, [color, prefix, patterned]);
 
   return texture;
 }
@@ -125,11 +131,17 @@ function StitchOutline({ w, h, y }: { w: number; h: number; y: number }) {
  * corners, a stitched border, matte fabric material and the brand logo in the
  * upper-right corner (matching the real product).
  */
-export function Mousepad({ size, surface, color }: MousepadProps) {
+export function Mousepad({
+  size,
+  surface,
+  color,
+  texturePrefix = 'cloth',
+  patterned = false,
+}: MousepadProps) {
   const dims = SIZES[size];
   const accent = SURFACES[surface].accent;
   const logoTexture = useLogoTexture();
-  const fabric = useFabricTexture(color);
+  const fabric = useFabricTexture(color, texturePrefix, patterned);
 
   // Convert mm to scene units (100 mm = 1 unit) with a touch of exaggeration.
   const w = dims.widthMm / 100;

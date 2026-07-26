@@ -15,6 +15,8 @@ interface ProductViewerProps {
   surface: SurfaceId;
   size: SizeId;
   color: ColorId;
+  texturePrefix?: 'cloth' | 'pattern';
+  patterned?: boolean;
   className?: string;
 }
 
@@ -23,7 +25,14 @@ interface ProductViewerProps {
  * realistic materials, premium lighting and soft contact shadows.
  * Touch gestures are supported for mobile inspection.
  */
-export function ProductViewer({ surface, size, color, className }: ProductViewerProps) {
+export function ProductViewer({
+  surface,
+  size,
+  color,
+  texturePrefix = 'cloth',
+  patterned = false,
+  className,
+}: ProductViewerProps) {
   return (
     <div className={className}>
       <Canvas
@@ -51,7 +60,13 @@ export function ProductViewer({ surface, size, color, className }: ProductViewer
           />
 
           <group rotation={[-0.2, 0, 0]}>
-            <Mousepad surface={surface} size={size} color={color} />
+            <Mousepad
+              surface={surface}
+              size={size}
+              color={color}
+              texturePrefix={texturePrefix}
+              patterned={patterned}
+            />
           </group>
 
           <ContactShadows
