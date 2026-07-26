@@ -270,7 +270,13 @@ export const FAQ: FaqItem[] = [
 ];
 
 export const GALLERY: GalleryItem[] = [
-  { id: 'g1', title: 'Micro-weave', caption: 'Macro cloth texture', kind: 'macro' },
+  {
+    id: 'g1',
+    title: 'Micro-weave',
+    caption: 'Macro cloth texture',
+    kind: 'macro',
+    image: '/assets/macro-weave.png',
+  },
   {
     id: 'g2',
     title: 'Rubber base',

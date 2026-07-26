@@ -1,9 +1,10 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { RoundedBox } from '@react-three/drei';
 import * as THREE from 'three';
 import { useLogoTexture } from '@/lib/logoTexture';
+import { withBasePath } from '@/lib/basePath';
 import { SIZES } from '@/lib/products';
 import type { SizeId, SurfaceId } from '@/types';
 import { SURFACES } from '@/lib/products';
@@ -13,30 +14,56 @@ interface MousepadProps {
   surface: SurfaceId;
 }
 
-/** Procedurally generated matte-cloth fabric texture for the pad surface. */
-function useFabricTexture(): THREE.CanvasTexture {
-  return useMemo(() => {
-    const s = 512;
-    const canvas = document.createElement('canvas');
-    canvas.width = s;
-    canvas.height = s;
-    const ctx = canvas.getContext('2d')!;
-    ctx.fillStyle = '#0a0a0a';
-    ctx.fillRect(0, 0, s, s);
-    // Subtle woven grain
-    const img = ctx.getImageData(0, 0, s, s);
-    for (let i = 0; i < img.data.length; i += 4) {
-      const n = 6 + Math.random() * 10;
-      img.data[i] += n;
-      img.data[i + 1] += n;
-      img.data[i + 2] += n;
-    }
-    ctx.putImageData(img, 0, 0);
-    const tex = new THREE.CanvasTexture(canvas);
-    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-    tex.repeat.set(8, 8);
-    return tex;
+/** A procedural fabric grain used as an immediate fallback for the pad surface. */
+function makeProceduralFabric(): THREE.CanvasTexture {
+  const s = 512;
+  const canvas = document.createElement('canvas');
+  canvas.width = s;
+  canvas.height = s;
+  const ctx = canvas.getContext('2d')!;
+  ctx.fillStyle = '#0a0a0a';
+  ctx.fillRect(0, 0, s, s);
+  const img = ctx.getImageData(0, 0, s, s);
+  for (let i = 0; i < img.data.length; i += 4) {
+    const n = 6 + Math.random() * 10;
+    img.data[i] += n;
+    img.data[i + 1] += n;
+    img.data[i + 2] += n;
+  }
+  ctx.putImageData(img, 0, 0);
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(8, 8);
+  return tex;
+}
+
+/**
+ * The pad surface texture. Loads the real micro-woven cloth photo and tiles it
+ * across the pad; falls back to a procedural grain until (or unless) it loads.
+ */
+function useFabricTexture(): THREE.Texture {
+  const fallback = useMemo(makeProceduralFabric, []);
+  const [texture, setTexture] = useState<THREE.Texture>(fallback);
+
+  useEffect(() => {
+    let active = true;
+    new THREE.TextureLoader().load(
+      withBasePath('/textures/cloth-weave.png'),
+      (tex) => {
+        if (!active) return;
+        tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+        tex.repeat.set(3, 3);
+        tex.anisotropy = 8;
+        tex.colorSpace = THREE.SRGBColorSpace;
+        setTexture(tex);
+      },
+    );
+    return () => {
+      active = false;
+    };
   }, []);
+
+  return texture;
 }
 
 /** Builds a dashed rounded-rectangle outline to simulate the stitched border. */
@@ -113,7 +140,7 @@ export function Mousepad({ size, surface }: MousepadProps) {
       >
         <meshStandardMaterial
           map={fabric}
-          color="#0b0b0b"
+          color="#d8d8d8"
           roughness={0.94}
           metalness={0.02}
         />
