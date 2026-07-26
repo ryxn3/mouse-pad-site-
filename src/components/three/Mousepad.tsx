@@ -48,12 +48,20 @@ function useFabricTexture(color: ColorId): THREE.Texture {
 
   useEffect(() => {
     let active = true;
+    // Weave colourways tile as fabric; the red variant is a designed graphic
+    // that maps once across the whole pad.
+    const patterned = color === 'red';
     new THREE.TextureLoader().load(
       withBasePath(`/textures/cloth-${color}.png`),
       (tex) => {
         if (!active) return;
-        tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-        tex.repeat.set(2, 2);
+        if (patterned) {
+          tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
+          tex.repeat.set(1, 1);
+        } else {
+          tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+          tex.repeat.set(2, 2);
+        }
         tex.anisotropy = 8;
         tex.colorSpace = THREE.SRGBColorSpace;
         setTexture(tex);
