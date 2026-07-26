@@ -28,7 +28,7 @@ export const SURFACES: Record<SurfaceId, SurfaceVariant> = {
       'A slick micro-weave engineered for effortless, low-resistance movement. Built for high-sensitivity FPS play where fast flicks and rapid repositioning decide the round.',
     accent: '#B00020',
     ratings: { glide: 95, stoppingPower: 45, precision: 80, tracking: 92 },
-    bestGames: 'Valorant · CS2 · Apex Legends',
+    bestGames: 'CS2 · Apex Legends · Valorant',
   },
   balance: {
     id: 'balance',
@@ -38,7 +38,7 @@ export const SURFACES: Record<SurfaceId, SurfaceVariant> = {
       'The all-round choice. A refined weave that pairs smooth glide with confident stopping power — versatile enough for any title, at any sensitivity.',
     accent: '#f5f5f5',
     ratings: { glide: 75, stoppingPower: 72, precision: 88, tracking: 90 },
-    bestGames: 'Fortnite · Overwatch 2 · Rocket League',
+    bestGames: 'Overwatch 2 · Rocket League',
   },
   control: {
     id: 'control',
@@ -283,7 +283,7 @@ export const QUIZ: QuizQuestion[] = [
     id: 'q1',
     question: 'What do you play most?',
     options: [
-      { label: 'Fast-paced FPS (Valorant, Apex)', weight: { speed: 3, balance: 1, control: 0 } },
+      { label: 'Fast-paced FPS (Apex, Valorant)', weight: { speed: 3, balance: 1, control: 0 } },
       { label: 'Tactical FPS (CS2, R6)', weight: { speed: 0, balance: 1, control: 3 } },
       { label: 'A bit of everything', weight: { speed: 1, balance: 3, control: 1 } },
     ],
