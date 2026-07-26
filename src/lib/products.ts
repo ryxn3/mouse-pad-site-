@@ -291,7 +291,13 @@ export const GALLERY: GalleryItem[] = [
     kind: 'macro',
     image: '/assets/macro-stitching.png',
   },
-  { id: 'g4', title: 'The mark', caption: 'The Pegaris, rendered in white', kind: 'render' },
+  {
+    id: 'g4',
+    title: 'The mark',
+    caption: 'The Pegaris, in place',
+    kind: 'render',
+    image: '/assets/render-angle.png',
+  },
   {
     id: 'g5',
     title: 'Studio render',
