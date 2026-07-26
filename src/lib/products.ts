@@ -292,7 +292,13 @@ export const GALLERY: GalleryItem[] = [
     image: '/assets/macro-stitching.png',
   },
   { id: 'g4', title: 'The mark', caption: 'The Pegaris, rendered in white', kind: 'render' },
-  { id: 'g5', title: 'Studio render', caption: 'Floating product study', kind: 'render' },
+  {
+    id: 'g5',
+    title: 'Studio render',
+    caption: 'Floating product study',
+    kind: 'render',
+    image: '/assets/render-float.png',
+  },
   { id: 'g6', title: 'The setup', caption: 'A professional FPS desk', kind: 'setup' },
 ];
 
