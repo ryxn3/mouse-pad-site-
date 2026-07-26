@@ -9,11 +9,12 @@ import {
   Lightformer,
 } from '@react-three/drei';
 import { Mousepad } from './Mousepad';
-import type { SizeId, SurfaceId } from '@/types';
+import type { SizeId, SurfaceId, ColorId } from '@/types';
 
 interface ProductViewerProps {
   surface: SurfaceId;
   size: SizeId;
+  color: ColorId;
   className?: string;
 }
 
@@ -22,7 +23,7 @@ interface ProductViewerProps {
  * realistic materials, premium lighting and soft contact shadows.
  * Touch gestures are supported for mobile inspection.
  */
-export function ProductViewer({ surface, size, className }: ProductViewerProps) {
+export function ProductViewer({ surface, size, color, className }: ProductViewerProps) {
   return (
     <div className={className}>
       <Canvas
@@ -50,7 +51,7 @@ export function ProductViewer({ surface, size, className }: ProductViewerProps) 
           />
 
           <group rotation={[-0.2, 0, 0]}>
-            <Mousepad surface={surface} size={size} />
+            <Mousepad surface={surface} size={size} color={color} />
           </group>
 
           <ContactShadows

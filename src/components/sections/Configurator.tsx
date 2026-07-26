@@ -10,8 +10,10 @@ import {
   PRODUCT,
   SURFACE_LIST,
   SIZE_LIST,
+  PAD_COLOR_LIST,
   SURFACES,
   SIZES,
+  PAD_COLORS,
   priceFor,
   specsFor,
 } from '@/lib/products';
@@ -34,18 +36,19 @@ const ProductViewer = dynamic(
  * size selection, live specifications and an add-to-cart flow.
  */
 export function Configurator() {
-  const { surface, size, setSurface, setSize } = useConfigurator();
+  const { surface, size, color, setSurface, setSize, setColor } = useConfigurator();
   const addItem = useCart((s) => s.addItem);
   const [added, setAdded] = useState(false);
 
   const surf = SURFACES[surface];
   const sz = SIZES[size];
+  const col = PAD_COLORS[color];
   const price = priceFor(size);
   const specs = specsFor(surface, size);
 
   const handleAdd = () => {
     addItem({
-      id: lineItemId(PRODUCT.id, surface, size),
+      id: lineItemId(PRODUCT.id, surface, size, color),
       productId: PRODUCT.id,
       name: PRODUCT.name,
       surface,
@@ -53,6 +56,9 @@ export function Configurator() {
       size,
       sizeName: sz.name,
       dimensions: sz.dimensions,
+      color,
+      colorName: col.name,
+      colorSwatch: col.swatch,
       price,
       accent: surf.accent,
     });
@@ -76,6 +82,7 @@ export function Configurator() {
               <ProductViewer
                 surface={surface}
                 size={size}
+                color={color}
                 className="h-full w-full"
               />
               <div className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-4 rounded-full border border-white/10 bg-black/40 px-4 py-2 text-xs text-ink-muted backdrop-blur-md">
@@ -175,6 +182,39 @@ export function Configurator() {
                   <span className="mt-2 block text-sm tabular-nums text-ink">
                     {formatPrice(s.price)}
                   </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Colour selection */}
+          <div className="mt-8">
+            <div className="mb-3 flex items-center justify-between">
+              <span className="text-sm font-medium text-ink">Colour</span>
+              <span className="text-sm text-ink-muted">{col.name}</span>
+            </div>
+            <div className="flex items-center gap-3">
+              {PAD_COLOR_LIST.map((c) => (
+                <button
+                  key={c.id}
+                  onClick={() => setColor(c.id)}
+                  aria-label={c.name}
+                  aria-pressed={color === c.id}
+                  title={c.name}
+                  className={cn(
+                    'relative flex h-11 w-11 items-center justify-center rounded-full border transition-all duration-300',
+                    color === c.id
+                      ? 'border-white/70'
+                      : 'border-white/15 hover:border-white/40',
+                  )}
+                >
+                  <span
+                    className="h-7 w-7 rounded-full ring-1 ring-inset ring-white/10"
+                    style={{ background: c.swatch }}
+                  />
+                  {color === c.id && (
+                    <Check className="absolute h-4 w-4 text-white mix-blend-difference" />
+                  )}
                 </button>
               ))}
             </div>

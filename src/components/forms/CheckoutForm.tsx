@@ -250,14 +250,14 @@ export function CheckoutForm() {
                     }}
                   >
                     <span
-                      className="h-2.5 w-2.5 rounded-full"
-                      style={{ background: item.accent }}
+                      className="h-2.5 w-2.5 rounded-full ring-1 ring-inset ring-white/20"
+                      style={{ background: item.colorSwatch }}
                     />
                   </span>
                   <div className="flex-1">
                     <p className="text-sm text-ink">{item.name}</p>
                     <p className="text-xs text-ink-muted">
-                      {item.surfaceName} · {item.dimensions} · ×{item.quantity}
+                      {item.colorName} · {item.surfaceName} · {item.dimensions} · ×{item.quantity}
                     </p>
                   </div>
                   <span className="text-sm tabular-nums text-ink">

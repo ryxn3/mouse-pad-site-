@@ -26,6 +26,11 @@ export function lerp(start: number, end: number, t: number): number {
 }
 
 /** Create a stable id for cart line items. */
-export function lineItemId(productId: string, surface: string, size: string): string {
-  return `${productId}__${surface}__${size}`;
+export function lineItemId(
+  productId: string,
+  surface: string,
+  size: string,
+  color: string,
+): string {
+  return `${productId}__${surface}__${size}__${color}`;
 }

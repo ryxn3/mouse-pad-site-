@@ -5,13 +5,13 @@ import { RoundedBox } from '@react-three/drei';
 import * as THREE from 'three';
 import { useLogoTexture } from '@/lib/logoTexture';
 import { withBasePath } from '@/lib/basePath';
-import { SIZES } from '@/lib/products';
-import type { SizeId, SurfaceId } from '@/types';
-import { SURFACES } from '@/lib/products';
+import { SIZES, SURFACES } from '@/lib/products';
+import type { SizeId, SurfaceId, ColorId } from '@/types';
 
 interface MousepadProps {
   size: SizeId;
   surface: SurfaceId;
+  color: ColorId;
 }
 
 /** A procedural fabric grain used as an immediate fallback for the pad surface. */
@@ -38,21 +38,22 @@ function makeProceduralFabric(): THREE.CanvasTexture {
 }
 
 /**
- * The pad surface texture. Loads the real micro-woven cloth photo and tiles it
- * across the pad; falls back to a procedural grain until (or unless) it loads.
+ * The pad surface texture. Loads the real micro-woven cloth photo for the
+ * selected colourway and tiles it across the pad; falls back to a procedural
+ * grain until (or unless) it loads.
  */
-function useFabricTexture(): THREE.Texture {
+function useFabricTexture(color: ColorId): THREE.Texture {
   const fallback = useMemo(makeProceduralFabric, []);
   const [texture, setTexture] = useState<THREE.Texture>(fallback);
 
   useEffect(() => {
     let active = true;
     new THREE.TextureLoader().load(
-      withBasePath('/textures/cloth-weave.png'),
+      withBasePath(`/textures/cloth-${color}.png`),
       (tex) => {
         if (!active) return;
         tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-        tex.repeat.set(3, 3);
+        tex.repeat.set(2, 2);
         tex.anisotropy = 8;
         tex.colorSpace = THREE.SRGBColorSpace;
         setTexture(tex);
@@ -61,7 +62,7 @@ function useFabricTexture(): THREE.Texture {
     return () => {
       active = false;
     };
-  }, []);
+  }, [color]);
 
   return texture;
 }
@@ -116,11 +117,11 @@ function StitchOutline({ w, h, y }: { w: number; h: number; y: number }) {
  * corners, a stitched border, matte fabric material and the brand logo in the
  * upper-right corner (matching the real product).
  */
-export function Mousepad({ size, surface }: MousepadProps) {
+export function Mousepad({ size, surface, color }: MousepadProps) {
   const dims = SIZES[size];
   const accent = SURFACES[surface].accent;
   const logoTexture = useLogoTexture();
-  const fabric = useFabricTexture();
+  const fabric = useFabricTexture(color);
 
   // Convert mm to scene units (100 mm = 1 unit) with a touch of exaggeration.
   const w = dims.widthMm / 100;
@@ -140,8 +141,8 @@ export function Mousepad({ size, surface }: MousepadProps) {
       >
         <meshStandardMaterial
           map={fabric}
-          color="#d8d8d8"
-          roughness={0.94}
+          color="#ffffff"
+          roughness={0.9}
           metalness={0.02}
         />
       </RoundedBox>

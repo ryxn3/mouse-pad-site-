@@ -1,6 +1,19 @@
 /** Surface glide profile of a mousepad. */
 export type SurfaceId = 'speed' | 'balance' | 'control';
 
+/** Cloth colourway of a mousepad. */
+export type ColorId = 'black' | 'red' | 'royal' | 'purple';
+
+export interface ColorVariant {
+  id: ColorId;
+  name: string;
+  /** Swatch colour shown in the UI. */
+  swatch: string;
+  /** Base colour used to tint the cloth in the 3D viewer (brighter to read
+   *  through the dark weave texture). */
+  tint: string;
+}
+
 /** Available physical footprints. */
 export type SizeId = 'm' | 'l';
 
@@ -87,6 +100,9 @@ export interface CartItem {
   size: SizeId;
   sizeName: string;
   dimensions: string;
+  color: ColorId;
+  colorName: string;
+  colorSwatch: string;
   price: number;
   quantity: number;
   accent: string;

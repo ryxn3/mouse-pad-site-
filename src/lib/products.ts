@@ -10,6 +10,8 @@ import type {
   QuizQuestion,
   SurfaceId,
   SizeId,
+  ColorId,
+  ColorVariant,
 } from '@/types';
 
 export const PRODUCT: Product = {
@@ -82,6 +84,20 @@ export const SIZES: Record<SizeId, SizeVariant> = {
 };
 
 export const SIZE_LIST: SizeVariant[] = [SIZES.m, SIZES.l];
+
+export const PAD_COLORS: Record<ColorId, ColorVariant> = {
+  black: { id: 'black', name: 'Midnight Black', swatch: '#0b0b0b', tint: '#cfcfcf' },
+  red: { id: 'red', name: 'Crimson Red', swatch: '#B00020', tint: '#ff3446' },
+  royal: { id: 'royal', name: 'Royal Blue', swatch: '#1d4ed8', tint: '#3f6bff' },
+  purple: { id: 'purple', name: 'Amethyst', swatch: '#6d28d9', tint: '#9a5cff' },
+};
+
+export const PAD_COLOR_LIST: ColorVariant[] = [
+  PAD_COLORS.black,
+  PAD_COLORS.red,
+  PAD_COLORS.royal,
+  PAD_COLORS.purple,
+];
 
 /** Compute the price for a given size (surface does not affect price). */
 export function priceFor(size: SizeId): number {
@@ -305,7 +321,13 @@ export const GALLERY: GalleryItem[] = [
     kind: 'render',
     image: '/assets/render-float.png',
   },
-  { id: 'g6', title: 'The setup', caption: 'A professional FPS desk', kind: 'setup' },
+  {
+    id: 'g6',
+    title: 'Four colourways',
+    caption: 'Black · Crimson · Royal · Amethyst',
+    kind: 'setup',
+    image: '/assets/colorways.png',
+  },
 ];
 
 export const QUIZ: QuizQuestion[] = [

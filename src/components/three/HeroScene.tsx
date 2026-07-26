@@ -12,7 +12,7 @@ import { lerp } from '@/lib/utils';
 /** Animated pad: slow rotation, gentle float, and a subtle tilt toward the cursor. */
 function AnimatedPad({ reduced }: { reduced: boolean }) {
   const group = useRef<THREE.Group>(null);
-  const { surface, size } = useConfigurator();
+  const { surface, size, color } = useConfigurator();
 
   useFrame((state, delta) => {
     if (!group.current) return;
@@ -35,7 +35,7 @@ function AnimatedPad({ reduced }: { reduced: boolean }) {
         floatIntensity={reduced ? 0 : 0.6}
         floatingRange={[-0.08, 0.08]}
       >
-        <Mousepad surface={surface} size={size} />
+        <Mousepad surface={surface} size={size} color={color} />
       </Float>
     </group>
   );

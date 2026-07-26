@@ -73,8 +73,8 @@ export function CartDrawer() {
                           }}
                         >
                           <span
-                            className="h-3 w-3 rounded-full"
-                            style={{ background: item.accent }}
+                            className="h-3 w-3 rounded-full ring-1 ring-inset ring-white/20"
+                            style={{ background: item.colorSwatch }}
                           />
                         </div>
                         <div className="flex flex-1 flex-col gap-1">
@@ -82,7 +82,7 @@ export function CartDrawer() {
                             <div>
                               <p className="text-sm font-medium text-ink">{item.name}</p>
                               <p className="text-xs text-ink-muted">
-                                {item.surfaceName} · {item.dimensions}
+                                {item.colorName} · {item.surfaceName} · {item.dimensions}
                               </p>
                             </div>
                             <button
