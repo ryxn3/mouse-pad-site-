@@ -54,12 +54,12 @@ export function LoadingScreen() {
             className="relative"
           >
             <Image
-              src={withBasePath('/assets/logo.png')}
+              src={withBasePath('/assets/logo-mark.png')}
               alt="Pegaris"
               width={120}
               height={120}
               priority
-              className="logo-on-dark h-auto w-[110px]"
+              className="h-auto w-[110px]"
             />
           </motion.div>
 

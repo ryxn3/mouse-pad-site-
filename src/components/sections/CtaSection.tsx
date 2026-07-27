@@ -21,11 +21,11 @@ export function CtaSection() {
         <div className="pointer-events-none absolute -bottom-20 left-1/2 h-64 w-[600px] -translate-x-1/2 rounded-full bg-crimson/10 blur-[120px]" />
 
         <Image
-          src={withBasePath('/assets/logo.png')}
+          src={withBasePath('/assets/logo-mark.png')}
           alt="Pegaris"
           width={72}
           height={72}
-          className="logo-on-dark relative mx-auto mb-8 opacity-90"
+          className="relative mx-auto mb-8 h-16 w-auto opacity-90"
         />
         <h2 className="heading-lg relative mx-auto max-w-2xl text-gradient">
           Your aim deserves the right foundation.

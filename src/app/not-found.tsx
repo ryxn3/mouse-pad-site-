@@ -7,11 +7,11 @@ export default function NotFound() {
     <div className="relative flex min-h-[80svh] flex-col items-center justify-center px-6 text-center">
       <div className="pointer-events-none absolute inset-0 bg-radial-glow opacity-50" />
       <Image
-        src={withBasePath('/assets/logo.png')}
+        src={withBasePath('/assets/logo-mark.png')}
         alt="Pegaris"
         width={80}
         height={80}
-        className="logo-on-dark relative mb-8 opacity-80"
+        className="relative mb-8 h-16 w-auto opacity-80"
       />
       <p className="eyebrow relative">Error 404</p>
       <h1 className="heading-lg relative mt-4 text-gradient">Off the map.</h1>

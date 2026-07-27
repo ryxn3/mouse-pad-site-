@@ -28,12 +28,12 @@ export function Logo({
   const content = (
     <span className={cn('inline-flex items-center gap-3', className)}>
       <Image
-        src={withBasePath('/assets/logo.png')}
+        src={withBasePath('/assets/logo-mark.png')}
         alt="Pegaris"
         width={size}
         height={size}
         priority={priority}
-        className="logo-on-dark h-auto w-auto object-contain"
+        className="h-auto w-auto object-contain"
         style={{ width: size, height: size }}
       />
       {withText && (

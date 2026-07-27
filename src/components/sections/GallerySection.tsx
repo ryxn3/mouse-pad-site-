@@ -85,11 +85,11 @@ function GalleryVisual({ item, index }: { item: GalleryItem; index: number }) {
       <div className="relative flex h-full min-h-[200px] w-full items-center justify-center bg-gradient-to-br from-surface-overlay to-background">
         <div className="absolute inset-0 bg-radial-glow opacity-40" />
         <Image
-          src={withBasePath('/assets/logo.png')}
+          src={withBasePath('/assets/logo-mark.png')}
           alt="Pegaris mark"
           width={160}
           height={160}
-          className="logo-on-dark relative w-1/2 max-w-[160px] opacity-90 transition-transform duration-700 group-hover:scale-110"
+          className="relative h-auto w-1/2 max-w-[160px] opacity-90 transition-transform duration-700 group-hover:scale-110"
         />
       </div>
     );
