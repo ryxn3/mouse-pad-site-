@@ -102,23 +102,39 @@ export interface GalleryItem {
   image?: string;
 }
 
-/** A configured, purchasable line item. */
+/** A configured, purchasable line item (mousepad or accessory). */
 export interface CartItem {
   id: string;
   productId: string;
   name: string;
   preorder: boolean;
-  surface: SurfaceId;
-  surfaceName: string;
-  size: SizeId;
-  sizeName: string;
-  dimensions: string;
-  color: ColorId;
-  colorName: string;
+  /** Human-readable variant line shown in cart & checkout. */
+  description: string;
+  /** Swatch colour used for the line-item thumbnail. */
   colorSwatch: string;
   price: number;
   quantity: number;
   accent: string;
+  // Mousepad-only attributes (absent for accessories).
+  surface?: SurfaceId;
+  surfaceName?: string;
+  size?: SizeId;
+  sizeName?: string;
+  dimensions?: string;
+  color?: ColorId;
+  colorName?: string;
+}
+
+export interface Accessory {
+  id: string;
+  name: string;
+  subtitle: string;
+  tagline: string;
+  description: string;
+  price: number;
+  preorder: boolean;
+  specs: Specification[];
+  highlights: string[];
 }
 
 export interface QuizQuestion {

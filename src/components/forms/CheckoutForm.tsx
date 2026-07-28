@@ -263,7 +263,7 @@ export function CheckoutForm() {
                   <div className="flex-1">
                     <p className="text-sm text-ink">{item.name}</p>
                     <p className="text-xs text-ink-muted">
-                      {item.colorName} · {item.surfaceName} · {item.dimensions} · ×{item.quantity}
+                      {item.description} · ×{item.quantity}
                     </p>
                   </div>
                   <span className="text-sm tabular-nums text-ink">

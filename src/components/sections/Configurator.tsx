@@ -55,6 +55,10 @@ export function Configurator() {
       productId: prod.id,
       name: prod.name,
       preorder: prod.preorder,
+      description: `${col.name} · ${surf.name} · ${sz.dimensions}`,
+      colorSwatch: col.swatch,
+      price,
+      accent: surf.accent,
       surface,
       surfaceName: surf.name,
       size,
@@ -62,9 +66,6 @@ export function Configurator() {
       dimensions: sz.dimensions,
       color,
       colorName: col.name,
-      colorSwatch: col.swatch,
-      price,
-      accent: surf.accent,
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);

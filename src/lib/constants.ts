@@ -14,6 +14,7 @@ export interface NavLink {
 export const NAV_LINKS: NavLink[] = [
   { label: 'Home', href: '/' },
   { label: 'Products', href: '/products' },
+  { label: 'Accessories', href: '/accessories' },
   { label: 'Technology', href: '/technology' },
   { label: 'Gallery', href: '/gallery' },
   { label: 'FAQ', href: '/faq' },
@@ -23,6 +24,7 @@ export const NAV_LINKS: NavLink[] = [
 export const FOOTER_LINKS = {
   shop: [
     { label: 'Products', href: '/products' },
+    { label: 'Accessories', href: '/accessories' },
     { label: 'Technology', href: '/technology' },
     { label: 'Gallery', href: '/gallery' },
   ],

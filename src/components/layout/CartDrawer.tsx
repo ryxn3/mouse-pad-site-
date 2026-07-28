@@ -88,9 +88,7 @@ export function CartDrawer() {
                                   </span>
                                 )}
                               </div>
-                              <p className="text-xs text-ink-muted">
-                                {item.colorName} · {item.surfaceName} · {item.dimensions}
-                              </p>
+                              <p className="text-xs text-ink-muted">{item.description}</p>
                             </div>
                             <button
                               onClick={() => removeItem(item.id)}
