@@ -4,27 +4,49 @@ import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, ShoppingBag, RotateCcw, Move3d } from 'lucide-react';
-import { KEYCHAIN } from '@/lib/accessories';
 import { useCart } from '@/state/cart';
-import { formatPrice } from '@/lib/utils';
+import { formatPrice, cn } from '@/lib/utils';
+import type { Accessory } from '@/types';
+
+const BLURBS: Record<string, string> = {
+  'sling-keychain':
+    'A woven nylon sling with the PEGARIS wordmark and a crimson centre stripe, finished with a leather-reinforced head and a matte-black snap-hook clasp. Clip it to a bag, a belt loop, or your keys.',
+  'arm-sleeve':
+    'A four-way-stretch compression sleeve with a low-friction forearm panel for a smoother, more consistent arm-aim glide. Tonal PEGARIS graphics, speed-line detailing and anti-slip silicone cuffs.',
+};
+
+const viewerLoading = () => (
+  <div className="flex h-full items-center justify-center">
+    <div className="h-10 w-10 animate-pulse-slow rounded-full bg-crimson/30" />
+  </div>
+);
 
 const KeychainViewer = dynamic(
   () => import('@/components/three/KeychainViewer').then((m) => m.KeychainViewer),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex h-full items-center justify-center">
-        <div className="h-10 w-10 animate-pulse-slow rounded-full bg-crimson/30" />
-      </div>
-    ),
-  },
+  { ssr: false, loading: viewerLoading },
+);
+const ArmSleeveViewer = dynamic(
+  () => import('@/components/three/ArmSleeveViewer').then((m) => m.ArmSleeveViewer),
+  { ssr: false, loading: viewerLoading },
 );
 
-/** The Sling Keychain shop: interactive 3D viewer, buy box, highlights, specs. */
-export function AccessoryShop() {
+/** Maps an accessory to its 3D viewer. */
+function AccessoryViewer({ id }: { id: string }) {
+  if (id === 'arm-sleeve') return <ArmSleeveViewer className="h-full w-full" />;
+  return <KeychainViewer className="h-full w-full" />;
+}
+
+interface AccessoryShopProps {
+  accessory: Accessory;
+  /** Reverse columns so alternating rows mirror each other. */
+  flip?: boolean;
+}
+
+/** A single accessory: interactive 3D viewer, buy box, highlights and specs. */
+export function AccessoryShop({ accessory, flip = false }: AccessoryShopProps) {
   const addItem = useCart((s) => s.addItem);
   const [added, setAdded] = useState(false);
-  const a = KEYCHAIN;
+  const a = accessory;
 
   const handleAdd = () => {
     addItem({
@@ -45,11 +67,11 @@ export function AccessoryShop() {
     <section className="container-px py-16 md:py-24">
       <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
         {/* 3D viewer */}
-        <div className="relative">
+        <div className={cn('relative', flip && 'lg:order-2')}>
           <div className="sticky top-28">
             <div className="relative aspect-square overflow-hidden rounded-4xl border border-white/[0.06] bg-gradient-to-b from-surface-raised to-background">
               <div className="pointer-events-none absolute inset-0 bg-radial-glow opacity-30" />
-              <KeychainViewer className="h-full w-full" />
+              <AccessoryViewer id={a.id} />
               <div className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-4 rounded-full border border-white/10 bg-black/40 px-4 py-2 text-xs text-ink-muted backdrop-blur-md">
                 <span className="flex items-center gap-1.5">
                   <RotateCcw className="h-3.5 w-3.5" /> Drag to rotate
@@ -63,7 +85,7 @@ export function AccessoryShop() {
         </div>
 
         {/* Buy box */}
-        <div className="flex flex-col">
+        <div className={cn('flex flex-col', flip && 'lg:order-1')}>
           <div className="flex items-center gap-3">
             <span className="eyebrow">{a.subtitle}</span>
             {a.preorder && (
@@ -81,9 +103,7 @@ export function AccessoryShop() {
           </div>
 
           <p className="mt-6 max-w-md leading-relaxed text-ink-muted">
-            A woven nylon sling with the PEGARIS wordmark and a crimson centre
-            stripe, finished with a leather-reinforced head and a matte-black
-            snap-hook clasp. Clip it to a bag, a belt loop, or your keys.
+            {BLURBS[a.id] ?? a.description}
           </p>
 
           {/* Highlights */}

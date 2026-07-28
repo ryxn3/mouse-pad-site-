@@ -25,4 +25,29 @@ export const KEYCHAIN: Accessory = {
   ],
 };
 
-export const ACCESSORIES: Accessory[] = [KEYCHAIN];
+export const ARM_SLEEVE: Accessory = {
+  id: 'arm-sleeve',
+  name: 'Arm Sleeve',
+  subtitle: 'Compression gaming sleeve',
+  tagline: 'Smooth, consistent glide.',
+  description: 'Compression knit · tonal graphics',
+  price: 24,
+  preorder: true,
+  highlights: [
+    'Four-way-stretch compression knit',
+    'Low-friction forearm panel',
+    'Tonal PEGARIS wordmark & mark',
+    'Anti-slip silicone cuff',
+  ],
+  specs: [
+    { label: 'Material', value: 'Nylon / spandex compression knit' },
+    { label: 'Fit', value: 'Compression, four-way stretch' },
+    { label: 'Panel', value: 'Low-friction forearm zone' },
+    { label: 'Cuffs', value: 'Anti-slip silicone hems' },
+    { label: 'Graphics', value: 'Tonal wordmark, mark & speed lines' },
+    { label: 'Sizes', value: 'S · M · L · XL' },
+    { label: 'Warranty', value: '1 year' },
+  ],
+};
+
+export const ACCESSORIES: Accessory[] = [KEYCHAIN, ARM_SLEEVE];
