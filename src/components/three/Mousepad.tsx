@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { RoundedBox } from '@react-three/drei';
+import { useMemo } from 'react';
 import * as THREE from 'three';
 import { useLogoTexture } from '@/lib/logoTexture';
-import { withBasePath } from '@/lib/basePath';
+import { useSurfaceTexture } from '@/lib/mousepadTextures';
 import { SIZES, SURFACES } from '@/lib/products';
 import type { SizeId, SurfaceId, ColorId } from '@/types';
 
@@ -12,190 +11,147 @@ interface MousepadProps {
   size: SizeId;
   surface: SurfaceId;
   color: ColorId;
-  /** Texture family: 'cloth' (woven, tiled) or 'pattern' (graphic, mapped once). */
   texturePrefix?: 'cloth' | 'pattern';
   patterned?: boolean;
 }
 
-/** A procedural fabric grain used as an immediate fallback for the pad surface. */
-function makeProceduralFabric(): THREE.CanvasTexture {
-  const s = 512;
-  const canvas = document.createElement('canvas');
-  canvas.width = s;
-  canvas.height = s;
-  const ctx = canvas.getContext('2d')!;
-  ctx.fillStyle = '#0a0a0a';
-  ctx.fillRect(0, 0, s, s);
-  const img = ctx.getImageData(0, 0, s, s);
-  for (let i = 0; i < img.data.length; i += 4) {
-    const n = 6 + Math.random() * 10;
-    img.data[i] += n;
-    img.data[i + 1] += n;
-    img.data[i + 2] += n;
-  }
-  ctx.putImageData(img, 0, 0);
-  const tex = new THREE.CanvasTexture(canvas);
-  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-  tex.repeat.set(8, 8);
-  return tex;
+/** A rounded-rectangle shape centred on the origin (XY plane). */
+function roundedRectShape(w: number, h: number, r: number): THREE.Shape {
+  const s = new THREE.Shape();
+  const x = -w / 2;
+  const y = -h / 2;
+  s.moveTo(x + r, y);
+  s.lineTo(x + w - r, y);
+  s.quadraticCurveTo(x + w, y, x + w, y + r);
+  s.lineTo(x + w, y + h - r);
+  s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  s.lineTo(x + r, y + h);
+  s.quadraticCurveTo(x, y + h, x, y + h - r);
+  s.lineTo(x, y + r);
+  s.quadraticCurveTo(x, y, x + r, y);
+  return s;
 }
 
 /**
- * The pad surface texture. Loads the real micro-woven cloth photo for the
- * selected colourway and tiles it across the pad; falls back to a procedural
- * grain until (or unless) it loads.
+ * The Pegaris mousepad — an extruded cloth pad with softly rounded corners, a
+ * raised stitched border, a real (or procedurally-drawn) surface that covers
+ * the entire top, and the brand mark in the upper-right corner.
+ * 1 unit ≈ 100 mm; the pad is centred on the origin and lies flat (Y up).
  */
-function useFabricTexture(
-  color: ColorId,
-  prefix: 'cloth' | 'pattern',
-  patterned: boolean,
-): THREE.Texture {
-  const fallback = useMemo(makeProceduralFabric, []);
-  const [texture, setTexture] = useState<THREE.Texture>(fallback);
-
-  useEffect(() => {
-    let active = true;
-    // Woven colourways tile as fabric; patterned pads are a designed graphic
-    // that maps once across the whole pad.
-    new THREE.TextureLoader().load(
-      withBasePath(`/textures/${prefix}-${color}.png`),
-      (tex) => {
-        if (!active) return;
-        if (patterned) {
-          tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
-          tex.repeat.set(1, 1);
-        } else {
-          tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-          tex.repeat.set(2, 2);
-        }
-        tex.anisotropy = 8;
-        tex.colorSpace = THREE.SRGBColorSpace;
-        setTexture(tex);
-      },
-    );
-    return () => {
-      active = false;
-    };
-  }, [color, prefix, patterned]);
-
-  return texture;
-}
-
-/** Builds a dashed rounded-rectangle outline to simulate the stitched border. */
-function StitchOutline({ w, h, y }: { w: number; h: number; y: number }) {
-  const geometry = useMemo(() => {
-    const r = 0.22;
-    const shape = new THREE.Shape();
-    const hw = w / 2 - 0.06;
-    const hh = h / 2 - 0.06;
-    shape.moveTo(-hw + r, -hh);
-    shape.lineTo(hw - r, -hh);
-    shape.quadraticCurveTo(hw, -hh, hw, -hh + r);
-    shape.lineTo(hw, hh - r);
-    shape.quadraticCurveTo(hw, hh, hw - r, hh);
-    shape.lineTo(-hw + r, hh);
-    shape.quadraticCurveTo(-hw, hh, -hw, hh - r);
-    shape.lineTo(-hw, -hh + r);
-    shape.quadraticCurveTo(-hw, -hh, -hw + r, -hh);
-    const points = shape.getPoints(200);
-    const geo = new THREE.BufferGeometry().setFromPoints(
-      points.map((p) => new THREE.Vector3(p.x, 0, p.y)),
-    );
-    return geo;
-  }, [w, h]);
-
-  const material = useMemo(
-    () =>
-      new THREE.LineDashedMaterial({
-        color: '#3a3a3a',
-        dashSize: 0.05,
-        gapSize: 0.04,
-        transparent: true,
-        opacity: 0.9,
-      }),
-    [],
-  );
-
-  // A dashed line needs per-vertex distances computed for the dashes to show.
-  const line = useMemo(() => {
-    const l = new THREE.Line(geometry, material);
-    l.computeLineDistances();
-    return l;
-  }, [geometry, material]);
-
-  return <primitive object={line} position={[0, y, 0]} />;
-}
-
-/**
- * The Pegaris Pro mousepad — a procedurally modelled cloth pad with rounded
- * corners, a stitched border, matte fabric material and the brand logo in the
- * upper-right corner (matching the real product).
- */
-export function Mousepad({
-  size,
-  surface,
-  color,
-  texturePrefix = 'cloth',
-  patterned = false,
-}: MousepadProps) {
+export function Mousepad({ size, surface, color, patterned = false }: MousepadProps) {
   const dims = SIZES[size];
   const accent = SURFACES[surface].accent;
   const logoTexture = useLogoTexture();
-  const fabric = useFabricTexture(color, texturePrefix, patterned);
+  const surfaceTex = useSurfaceTexture(color, patterned);
 
-  // Convert mm to scene units (100 mm = 1 unit) with a touch of exaggeration.
   const w = dims.widthMm / 100;
   const h = dims.heightMm / 100;
-  const thickness = 0.14;
+  const thickness = 0.09;
+  const cornerR = 0.22;
   const topY = thickness / 2;
+
+  const shape = useMemo(() => roundedRectShape(w, h, cornerR), [w, h]);
+
+  // Solid pad body (rounded corners + slight edge bevel).
+  const bodyGeo = useMemo(() => {
+    const geo = new THREE.ExtrudeGeometry(shape, {
+      depth: thickness,
+      bevelEnabled: true,
+      bevelThickness: 0.015,
+      bevelSize: 0.02,
+      bevelSegments: 3,
+      curveSegments: 48,
+      steps: 1,
+    });
+    // Centre on Y=0 including the bevel cap so the textured top sits on top.
+    geo.translate(0, 0, -thickness / 2 - 0.015);
+    geo.rotateX(-Math.PI / 2); // lie flat: width→X, height→-Z, thickness→Y
+    geo.computeVertexNormals();
+    return geo;
+  }, [shape]);
+
+  // Flat top surface with clean 0–1 UVs so the texture covers the whole pad.
+  const topGeo = useMemo(() => {
+    const geo = new THREE.ShapeGeometry(shape, 64);
+    geo.computeBoundingBox();
+    const bb = geo.boundingBox!;
+    const pos = geo.attributes.position;
+    const uv = geo.attributes.uv;
+    const dx = bb.max.x - bb.min.x;
+    const dy = bb.max.y - bb.min.y;
+    for (let i = 0; i < pos.count; i++) {
+      uv.setXY(i, (pos.getX(i) - bb.min.x) / dx, (pos.getY(i) - bb.min.y) / dy);
+    }
+    uv.needsUpdate = true;
+    geo.rotateX(-Math.PI / 2);
+    return geo;
+  }, [shape]);
+
+  // Raised stitched-edge bead following the perimeter.
+  const beadGeo = useMemo(() => {
+    const pts = shape.getPoints(240).map((p) => new THREE.Vector3(p.x, topY, -p.y));
+    const curve = new THREE.CatmullRomCurve3(pts, true, 'catmullrom', 0.1);
+    return new THREE.TubeGeometry(curve, 420, 0.03, 10, true);
+  }, [shape, topY]);
+
+  // Dashed stitch line just inside the bead.
+  const stitch = useMemo(() => {
+    const inset = roundedRectShape(w - 0.14, h - 0.14, Math.max(0.05, cornerR - 0.07));
+    const pts = inset.getPoints(220).map((p) => new THREE.Vector3(p.x, topY + 0.028, -p.y));
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    const mat = new THREE.LineDashedMaterial({
+      color: '#3a3a3a',
+      dashSize: 0.05,
+      gapSize: 0.035,
+      transparent: true,
+      opacity: 0.85,
+    });
+    const line = new THREE.Line(geo, mat);
+    line.computeLineDistances();
+    return line;
+  }, [w, h, topY]);
 
   return (
     <group>
-      {/* Pad body */}
-      <RoundedBox
-        args={[w, thickness, h]}
-        radius={0.06}
-        smoothness={6}
-        castShadow
-        receiveShadow
-      >
-        <meshStandardMaterial
-          map={fabric}
-          color="#ffffff"
-          roughness={0.9}
-          metalness={0.02}
-        />
-      </RoundedBox>
+      {/* Body */}
+      <mesh geometry={bodyGeo} castShadow receiveShadow>
+        <meshStandardMaterial color="#070707" roughness={0.95} metalness={0.02} />
+      </mesh>
 
-      {/* Raised stitched edge frame — subtly accent tinted */}
-      <RoundedBox
-        args={[w + 0.02, thickness + 0.02, h + 0.02]}
-        radius={0.07}
-        smoothness={6}
-      >
+      {/* Textured top surface */}
+      <mesh geometry={topGeo} position={[0, topY + 0.002, 0]} receiveShadow>
+        <meshStandardMaterial
+          map={surfaceTex}
+          color="#ffffff"
+          roughness={0.92}
+          metalness={0.02}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+
+      {/* Stitched edge bead */}
+      <mesh geometry={beadGeo}>
         <meshStandardMaterial
           color="#050505"
-          roughness={0.7}
-          metalness={0.1}
+          roughness={0.5}
+          metalness={0.15}
           emissive={new THREE.Color(accent)}
-          emissiveIntensity={surface === 'balance' ? 0.02 : 0.05}
-          transparent
-          opacity={0.35}
-          depthWrite={false}
+          emissiveIntensity={surface === 'balance' ? 0.015 : 0.04}
         />
-      </RoundedBox>
+      </mesh>
 
-      <StitchOutline w={w} h={h} y={topY + 0.005} />
+      {/* Stitch line */}
+      <primitive object={stitch} />
 
-      {/* Brand logo — upper-right corner */}
+      {/* Brand mark, upper-right */}
       {logoTexture && (
-        <mesh position={[w * 0.3, topY + 0.006, -h * 0.28]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[w * 0.2, w * 0.2]} />
+        <mesh position={[w * 0.3, topY + 0.006, -h * 0.3]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[w * 0.19, w * 0.19]} />
           <meshStandardMaterial
             map={logoTexture}
             transparent
-            roughness={0.85}
-            opacity={0.92}
+            roughness={0.8}
+            opacity={0.95}
             depthWrite={false}
           />
         </mesh>
