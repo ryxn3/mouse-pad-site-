@@ -31,34 +31,35 @@ export function KeychainViewer({ className }: KeychainViewerProps) {
         <color attach="background" args={['#0b0b0b']} />
 
         <Suspense fallback={null}>
-          <ambientLight intensity={0.4} />
+          <ambientLight intensity={0.7} />
           <directionalLight
-            position={[4, 6, 5]}
-            intensity={1.6}
+            position={[4, 7, 6]}
+            intensity={2.4}
             castShadow
             shadow-mapSize={[2048, 2048]}
           />
+          <directionalLight position={[-5, 3, -2]} intensity={1.1} color="#ffffff" />
           <spotLight
-            position={[-5, 3, -3]}
-            angle={0.5}
+            position={[-4, 2, 4]}
+            angle={0.6}
             penumbra={1}
-            intensity={22}
+            intensity={26}
             color="#B00020"
           />
 
           <Float
-            speed={reduced ? 0 : 1.4}
-            rotationIntensity={reduced ? 0 : 0.4}
+            speed={reduced ? 0 : 1.3}
+            rotationIntensity={reduced ? 0 : 0.22}
             floatIntensity={reduced ? 0 : 0.5}
           >
-            <group rotation={[0.1, -0.3, 0.08]}>
+            <group position={[0, -0.4, 0]} rotation={[0.05, -0.15, 0]}>
               <Keychain />
             </group>
           </Float>
 
           <ContactShadows
-            position={[0, -2.6, 0]}
-            opacity={0.4}
+            position={[0, -3, 0]}
+            opacity={0.35}
             scale={10}
             blur={2.6}
             far={5}
@@ -67,8 +68,9 @@ export function KeychainViewer({ className }: KeychainViewerProps) {
 
           {/* Self-contained studio environment (no external HDR fetch). */}
           <Environment resolution={256} frames={1}>
-            <Lightformer form="rect" intensity={2.2} color="#ffffff" position={[0, 5, 2]} scale={[10, 6, 1]} />
-            <Lightformer form="rect" intensity={1} color="#B00020" position={[-5, 1, -2]} scale={[6, 3, 1]} />
+            <Lightformer form="rect" intensity={3.2} color="#ffffff" position={[0, 5, 3]} scale={[10, 6, 1]} />
+            <Lightformer form="rect" intensity={2} color="#ffffff" position={[4, 0, 4]} scale={[4, 8, 1]} />
+            <Lightformer form="rect" intensity={1.2} color="#B00020" position={[-5, 1, -2]} scale={[6, 3, 1]} />
           </Environment>
 
           <OrbitControls

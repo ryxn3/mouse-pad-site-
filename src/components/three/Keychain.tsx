@@ -1,127 +1,198 @@
 'use client';
 
 import { useMemo } from 'react';
-import { RoundedBox } from '@react-three/drei';
 import * as THREE from 'three';
 import { useStrapTexture } from '@/lib/keychainTexture';
 
+/* ------------------------------------------------------------------ */
+/*  2D shape helpers                                                   */
+/* ------------------------------------------------------------------ */
+
+/** A rounded rectangle shape centred on the origin. */
+function roundedRect(w: number, h: number, r: number): THREE.Shape {
+  const s = new THREE.Shape();
+  const x = -w / 2;
+  const y = -h / 2;
+  s.moveTo(x + r, y);
+  s.lineTo(x + w - r, y);
+  s.quadraticCurveTo(x + w, y, x + w, y + r);
+  s.lineTo(x + w, y + h - r);
+  s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  s.lineTo(x + r, y + h);
+  s.quadraticCurveTo(x, y + h, x, y + h - r);
+  s.lineTo(x, y + r);
+  s.quadraticCurveTo(x, y, x + r, y);
+  return s;
+}
+
+/** A closed annular sector — a solid curved bar (the hook body). */
+function ringSector(rOuter: number, rInner: number, a0: number, a1: number): THREE.Shape {
+  const s = new THREE.Shape();
+  s.absarc(0, 0, rOuter, a0, a1, false);
+  s.absarc(0, 0, rInner, a1, a0, true);
+  return s;
+}
+
+/** A full washer/ring with a hole. */
+function annulus(rOuter: number, rInner: number): THREE.Shape {
+  const s = new THREE.Shape();
+  s.absarc(0, 0, rOuter, 0, Math.PI * 2, false);
+  const hole = new THREE.Path();
+  hole.absarc(0, 0, rInner, 0, Math.PI * 2, true);
+  s.holes.push(hole);
+  return s;
+}
+
+/** Extrude a 2D shape into a bevelled, depth-centred solid. */
+function extrude(shape: THREE.Shape, depth: number, bevel = 0.02): THREE.ExtrudeGeometry {
+  const geo = new THREE.ExtrudeGeometry(shape, {
+    depth,
+    bevelEnabled: true,
+    bevelThickness: bevel,
+    bevelSize: bevel,
+    bevelSegments: 3,
+    curveSegments: 48,
+    steps: 1,
+  });
+  geo.translate(0, 0, -depth / 2);
+  geo.computeVertexNormals();
+  return geo;
+}
+
+/** Small "°CLASP°" engraving printed on the clasp body. */
+function useClaspTexture(): THREE.CanvasTexture {
+  return useMemo(() => {
+    const w = 128;
+    const h = 512;
+    const c = document.createElement('canvas');
+    c.width = w;
+    c.height = h;
+    const ctx = c.getContext('2d')!;
+    ctx.fillStyle = '#161616';
+    ctx.fillRect(0, 0, w, h);
+    ctx.save();
+    ctx.translate(w / 2, h / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillStyle = '#3a3a3a';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '700 44px Arial, sans-serif';
+    ctx.fillText('°CLASP°', 0, -70);
+    ctx.font = '600 22px Arial, sans-serif';
+    ctx.fillText('PEGARIS', 0, 90);
+    ctx.restore();
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }, []);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Model                                                              */
+/* ------------------------------------------------------------------ */
+
 /**
- * A high-detail model of the Pegaris Sling Keychain: a matte-black snap-hook
- * clasp, split ring, leather-reinforced head and a woven nylon strap carrying
- * the PEGARIS wordmark and crimson centre stripe.
- *
- * Built to scene scale where 1 unit ≈ 1 cm; the group is centred on the origin.
+ * A high-detail model of the Pegaris Sling Keychain: an extruded matte-black
+ * snap-hook clasp with a spring gate, a swivel eye, a split ring, a
+ * leather-reinforced head with stitching, and a woven nylon strap carrying the
+ * PEGARIS wordmark and crimson centre stripe. 1 unit ≈ 1 cm; centred on origin.
  */
 export function Keychain() {
   const strap = useStrapTexture();
+  const claspTex = useClaspTexture();
 
-  // Shared materials
+  /* Materials */
   const metal = useMemo(
     () =>
-      new THREE.MeshStandardMaterial({
-        color: '#1c1c1c',
-        metalness: 0.9,
-        roughness: 0.42,
+      new THREE.MeshPhysicalMaterial({
+        color: '#242424',
+        metalness: 1,
+        roughness: 0.3,
+        clearcoat: 0.6,
+        clearcoatRoughness: 0.3,
+        envMapIntensity: 1.4,
+      }),
+    [],
+  );
+  const gateMetal = useMemo(
+    () =>
+      new THREE.MeshPhysicalMaterial({
+        color: '#0e0e0e',
+        metalness: 1,
+        roughness: 0.28,
+        clearcoat: 0.6,
+        clearcoatRoughness: 0.3,
       }),
     [],
   );
   const leather = useMemo(
     () =>
-      new THREE.MeshStandardMaterial({
-        color: '#0d0d0d',
-        metalness: 0.05,
-        roughness: 0.6,
-      }),
+      new THREE.MeshStandardMaterial({ color: '#0c0c0c', metalness: 0.05, roughness: 0.55 }),
     [],
   );
 
-  // Snap-hook loop: an almost-closed tube ring with a gap for the gate.
-  const hook = useMemo(() => {
-    const geo = new THREE.TorusGeometry(0.34, 0.07, 20, 48, Math.PI * 1.55);
-    return geo;
-  }, []);
+  /* Geometry (memoised) */
+  const hookGeo = useMemo(() => extrude(ringSector(0.42, 0.27, Math.PI * 1.16, Math.PI * 2.84), 0.14, 0.03), []);
+  const bodyGeo = useMemo(() => extrude(roundedRect(0.3, 1.0, 0.12), 0.15, 0.03), []);
+  const gateGeo = useMemo(() => extrude(roundedRect(0.09, 0.34, 0.04), 0.12, 0.02), []);
+  const eyeGeo = useMemo(() => extrude(annulus(0.14, 0.075), 0.11, 0.02), []);
+  const ringGeo = useMemo(() => extrude(annulus(0.22, 0.16), 0.07, 0.025), []);
+  const patchGeo = useMemo(() => extrude(roundedRect(0.62, 0.56, 0.08), 0.17, 0.03), []);
 
   return (
-    <group rotation={[0, 0, 0]}>
+    <group>
       {/* ---- Snap-hook clasp ---- */}
-      <group position={[0, 2.55, 0]}>
-        {/* Hook loop (gap faces up) */}
-        <mesh geometry={hook} material={metal} rotation={[0, 0, Math.PI * 0.72]} />
-        {/* Spring gate across the opening */}
-        <mesh material={metal} position={[0.16, 0.3, 0]} rotation={[0, 0, -0.5]}>
-          <cylinderGeometry args={[0.035, 0.035, 0.42, 12]} />
+      <group position={[0, 2.2, 0]}>
+        {/* Elongated body with CLASP engraving */}
+        <mesh geometry={bodyGeo} material={metal} />
+        <mesh position={[0, 0, 0.083]}>
+          <planeGeometry args={[0.22, 0.9]} />
+          <meshStandardMaterial map={claspTex} metalness={0.9} roughness={0.4} />
         </mesh>
-        {/* Body of the clasp (the flat elongated part) */}
-        <RoundedBox
-          args={[0.2, 0.6, 0.11]}
-          radius={0.05}
-          smoothness={5}
-          position={[0, -0.42, 0]}
-          material={metal}
-        />
-        {/* Rivet detail on the body */}
-        <mesh material={metal} position={[0, -0.42, 0.06]}>
-          <cylinderGeometry args={[0.05, 0.05, 0.03, 16]} />
+
+        {/* Hook loop on top (gap faces up for the gate) */}
+        <mesh geometry={hookGeo} material={metal} position={[0, 0.62, 0]} />
+        {/* Spring gate bridging the opening */}
+        <mesh geometry={gateGeo} material={gateMetal} position={[0.13, 0.74, 0.02]} rotation={[0, 0, -0.62]} />
+        {/* Gate pivot rivet */}
+        <mesh material={gateMetal} position={[-0.02, 0.5, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.035, 0.035, 0.22, 16]} />
         </mesh>
-        {/* Swivel eye at the bottom of the clasp */}
-        <mesh material={metal} position={[0, -0.78, 0]} rotation={[Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[0.1, 0.03, 16, 32]} />
-        </mesh>
+
+        {/* Swivel eye at the bottom */}
+        <mesh geometry={eyeGeo} material={metal} position={[0, -0.6, 0]} />
       </group>
 
       {/* ---- Split ring ---- */}
-      <mesh material={metal} position={[0, 1.6, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[0.17, 0.028, 16, 40]} />
-      </mesh>
+      <mesh geometry={ringGeo} material={metal} position={[0, 1.4, 0]} />
 
       {/* ---- Leather-reinforced head ---- */}
-      <RoundedBox
-        args={[0.58, 0.5, 0.16]}
-        radius={0.05}
-        smoothness={5}
-        position={[0, 1.2, 0]}
-        material={leather}
-      />
-      {/* Stitching hint on the leather */}
-      <mesh position={[0, 1.2, 0.085]}>
-        <planeGeometry args={[0.46, 0.38]} />
-        <meshStandardMaterial color="#0a0a0a" roughness={0.7} />
-      </mesh>
+      <group position={[0, 1.0, 0]}>
+        <mesh geometry={patchGeo} material={leather} />
+        {/* Stitch outline */}
+        <mesh position={[0, 0, 0.088]}>
+          <ringGeometry args={[0.21, 0.215, 4, 1, Math.PI / 4]} />
+          <meshStandardMaterial color="#2a2a2a" side={THREE.DoubleSide} />
+        </mesh>
+      </group>
 
       {/* ---- Woven strap ---- */}
-      {/* Black webbing base */}
-      <RoundedBox
-        args={[0.5, 3.0, 0.07]}
-        radius={0.03}
-        smoothness={4}
-        position={[0, -0.5, 0]}
-        castShadow
-        receiveShadow
-      >
+      <mesh position={[0, -0.75, 0]} castShadow receiveShadow>
+        <boxGeometry args={[0.52, 3.1, 0.08]} />
         <meshStandardMaterial color="#0b0b0b" roughness={0.85} metalness={0.02} />
-      </RoundedBox>
-      {/* Woven wordmark printed on the front and back faces (clean UVs) */}
-      {[0.037, -0.037].map((z, i) => (
-        <mesh key={z} position={[0, -0.5, z]} rotation={[0, i === 1 ? Math.PI : 0, 0]}>
-          <planeGeometry args={[0.46, 2.92]} />
-          <meshStandardMaterial
-            map={strap}
-            transparent
-            roughness={0.85}
-            metalness={0.02}
-          />
+      </mesh>
+      {/* Woven wordmark on the front and back faces (clean UVs) */}
+      {[0.043, -0.043].map((z, i) => (
+        <mesh key={z} position={[0, -0.75, z]} rotation={[0, i === 1 ? Math.PI : 0, 0]}>
+          <planeGeometry args={[0.48, 3.0]} />
+          <meshStandardMaterial map={strap} roughness={0.85} metalness={0.02} />
         </mesh>
       ))}
-      {/* Folded loop of the strap around the split ring */}
-      <RoundedBox
-        args={[0.5, 0.42, 0.07]}
-        radius={0.03}
-        smoothness={4}
-        position={[0, 1.15, 0.12]}
-        rotation={[0.5, 0, 0]}
-      >
+      {/* Folded loop of strap through the split ring */}
+      <mesh position={[0, 1.28, 0.12]} rotation={[0.55, 0, 0]}>
+        <boxGeometry args={[0.52, 0.5, 0.08]} />
         <meshStandardMaterial color="#0b0b0b" roughness={0.85} />
-      </RoundedBox>
+      </mesh>
     </group>
   );
 }
