@@ -1,13 +1,12 @@
 import type { Metadata } from 'next';
 import { PageHeader } from '@/components/ui/PageHeader';
-import { AccessoryShop } from '@/components/sections/AccessoryShop';
+import { AccessoryGrid } from '@/components/sections/AccessoryGrid';
 import { CtaSection } from '@/components/sections/CtaSection';
-import { ACCESSORIES } from '@/lib/accessories';
 
 export const metadata: Metadata = {
   title: 'Accessories',
   description:
-    'Pegaris accessories — the woven Sling Keychain and the compression Arm Sleeve, each inspectable in 3D.',
+    'Pegaris accessories — the Sling Keychain, compression Arm Sleeve and memory-foam Wrist Rest, each inspectable in 3D.',
 };
 
 export default function AccessoriesPage() {
@@ -16,18 +15,9 @@ export default function AccessoriesPage() {
       <PageHeader
         eyebrow="Accessories"
         title="Carry the mark."
-        description="Small things, finished to the same standard. Inspect each piece in 3D before you buy."
+        description="Small things, finished to the same standard. Pick a piece to inspect it in 3D and configure your order."
       />
-      {ACCESSORIES.map((accessory, i) => (
-        <div key={accessory.id}>
-          {i > 0 && (
-            <div className="container-px">
-              <div className="hairline" />
-            </div>
-          )}
-          <AccessoryShop accessory={accessory} flip={i % 2 === 1} />
-        </div>
-      ))}
+      <AccessoryGrid />
       <CtaSection />
     </>
   );

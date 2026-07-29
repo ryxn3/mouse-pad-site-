@@ -125,6 +125,17 @@ export interface CartItem {
   colorName?: string;
 }
 
+export interface AccessorySize {
+  id: string;
+  /** Keyboard form factor, e.g. "100%". */
+  label: string;
+  /** Friendly name, e.g. "Full-size". */
+  sublabel: string;
+  /** Wrist-rest length in millimetres (drives the 3D model). */
+  widthMm: number;
+  price: number;
+}
+
 export interface Accessory {
   id: string;
   name: string;
@@ -135,6 +146,8 @@ export interface Accessory {
   preorder: boolean;
   specs: Specification[];
   highlights: string[];
+  /** Optional selectable sizes (e.g. wrist-rest keyboard form factors). */
+  sizes?: AccessorySize[];
 }
 
 export interface QuizQuestion {

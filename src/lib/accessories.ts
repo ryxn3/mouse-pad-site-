@@ -50,4 +50,36 @@ export const ARM_SLEEVE: Accessory = {
   ],
 };
 
-export const ACCESSORIES: Accessory[] = [KEYCHAIN, ARM_SLEEVE];
+export const WRIST_REST: Accessory = {
+  id: 'wrist-rest',
+  name: 'Wrist Rest',
+  subtitle: 'Memory-foam wrist rest',
+  tagline: 'Sized to your board.',
+  description: 'Memory foam · woven top',
+  price: 29,
+  preorder: true,
+  sizes: [
+    { id: 'full', label: '100%', sublabel: 'Full-size', widthMm: 440, price: 29 },
+    { id: 'tkl', label: '80%', sublabel: 'TKL', widthMm: 360, price: 26 },
+    { id: '75', label: '75%', sublabel: 'Compact', widthMm: 330, price: 24 },
+    { id: '65', label: '65%', sublabel: 'Mini', widthMm: 300, price: 22 },
+  ],
+  highlights: [
+    'Slow-rebound memory-foam core',
+    'Micro-woven, water-resistant top',
+    'Anti-slip rubber base',
+    'Sized to match your keyboard',
+  ],
+  specs: [
+    { label: 'Core', value: 'Slow-rebound memory foam' },
+    { label: 'Top', value: 'Micro-woven cloth' },
+    { label: 'Base', value: 'Natural rubber, anti-slip' },
+    { label: 'Depth', value: '90 mm' },
+    { label: 'Height', value: '22 mm' },
+    { label: 'Edge', value: 'Anti-fray stitched border' },
+    { label: 'Warranty', value: '1 year' },
+  ],
+};
+
+export const ACCESSORIES: Accessory[] = [KEYCHAIN, ARM_SLEEVE, WRIST_REST];
+
