@@ -131,66 +131,66 @@ export function Keychain() {
     [],
   );
 
-  /* Geometry (memoised) */
-  const hookGeo = useMemo(() => extrude(ringSector(0.42, 0.27, Math.PI * 1.16, Math.PI * 2.84), 0.14, 0.03), []);
-  const bodyGeo = useMemo(() => extrude(roundedRect(0.3, 1.0, 0.12), 0.15, 0.03), []);
-  const gateGeo = useMemo(() => extrude(roundedRect(0.09, 0.34, 0.04), 0.12, 0.02), []);
-  const eyeGeo = useMemo(() => extrude(annulus(0.14, 0.075), 0.11, 0.02), []);
-  const ringGeo = useMemo(() => extrude(annulus(0.22, 0.16), 0.07, 0.025), []);
-  const patchGeo = useMemo(() => extrude(roundedRect(0.62, 0.56, 0.08), 0.17, 0.03), []);
+  /* Geometry (memoised) — slim, elongated proportions */
+  const hookGeo = useMemo(() => extrude(ringSector(0.26, 0.185, Math.PI * 1.18, Math.PI * 2.82), 0.07, 0.02), []);
+  const bodyGeo = useMemo(() => extrude(roundedRect(0.16, 0.78, 0.075), 0.075, 0.02), []);
+  const gateGeo = useMemo(() => extrude(roundedRect(0.05, 0.24, 0.025), 0.06, 0.015), []);
+  const eyeGeo = useMemo(() => extrude(annulus(0.095, 0.055), 0.06, 0.018), []);
+  const ringGeo = useMemo(() => extrude(annulus(0.15, 0.108), 0.045, 0.02), []);
+  const patchGeo = useMemo(() => extrude(roundedRect(0.42, 0.36, 0.06), 0.09, 0.025), []);
 
   return (
     <group>
       {/* ---- Snap-hook clasp ---- */}
-      <group position={[0, 2.2, 0]}>
-        {/* Elongated body with CLASP engraving */}
+      <group position={[0, 2.15, 0]}>
+        {/* Slim body with CLASP engraving */}
         <mesh geometry={bodyGeo} material={metal} />
-        <mesh position={[0, 0, 0.083]}>
-          <planeGeometry args={[0.22, 0.9]} />
+        <mesh position={[0, 0, 0.05]}>
+          <planeGeometry args={[0.12, 0.66]} />
           <meshStandardMaterial map={claspTex} metalness={0.9} roughness={0.4} />
         </mesh>
 
         {/* Hook loop on top (gap faces up for the gate) */}
-        <mesh geometry={hookGeo} material={metal} position={[0, 0.62, 0]} />
+        <mesh geometry={hookGeo} material={metal} position={[0, 0.5, 0]} />
         {/* Spring gate bridging the opening */}
-        <mesh geometry={gateGeo} material={gateMetal} position={[0.13, 0.74, 0.02]} rotation={[0, 0, -0.62]} />
+        <mesh geometry={gateGeo} material={gateMetal} position={[0.09, 0.6, 0.01]} rotation={[0, 0, -0.6]} />
         {/* Gate pivot rivet */}
-        <mesh material={gateMetal} position={[-0.02, 0.5, 0]} rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.035, 0.035, 0.22, 16]} />
+        <mesh material={gateMetal} position={[-0.02, 0.42, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.024, 0.024, 0.14, 16]} />
         </mesh>
 
         {/* Swivel eye at the bottom */}
-        <mesh geometry={eyeGeo} material={metal} position={[0, -0.6, 0]} />
+        <mesh geometry={eyeGeo} material={metal} position={[0, -0.48, 0]} />
       </group>
 
       {/* ---- Split ring ---- */}
-      <mesh geometry={ringGeo} material={metal} position={[0, 1.4, 0]} />
+      <mesh geometry={ringGeo} material={metal} position={[0, 1.42, 0]} />
 
       {/* ---- Leather-reinforced head ---- */}
-      <group position={[0, 1.0, 0]}>
+      <group position={[0, 1.02, 0]}>
         <mesh geometry={patchGeo} material={leather} />
         {/* Stitch outline */}
-        <mesh position={[0, 0, 0.088]}>
-          <ringGeometry args={[0.21, 0.215, 4, 1, Math.PI / 4]} />
+        <mesh position={[0, 0, 0.048]}>
+          <ringGeometry args={[0.14, 0.145, 4, 1, Math.PI / 4]} />
           <meshStandardMaterial color="#2a2a2a" side={THREE.DoubleSide} />
         </mesh>
       </group>
 
       {/* ---- Woven strap ---- */}
-      <mesh position={[0, -0.75, 0]} castShadow receiveShadow>
-        <boxGeometry args={[0.52, 3.1, 0.08]} />
+      <mesh position={[0, -0.72, 0]} castShadow receiveShadow>
+        <boxGeometry args={[0.38, 3.0, 0.05]} />
         <meshStandardMaterial color="#0b0b0b" roughness={0.85} metalness={0.02} />
       </mesh>
       {/* Woven wordmark on the front and back faces (clean UVs) */}
-      {[0.043, -0.043].map((z, i) => (
-        <mesh key={z} position={[0, -0.75, z]} rotation={[0, i === 1 ? Math.PI : 0, 0]}>
-          <planeGeometry args={[0.48, 3.0]} />
+      {[0.028, -0.028].map((z, i) => (
+        <mesh key={z} position={[0, -0.72, z]} rotation={[0, i === 1 ? Math.PI : 0, 0]}>
+          <planeGeometry args={[0.34, 2.9]} />
           <meshStandardMaterial map={strap} roughness={0.85} metalness={0.02} />
         </mesh>
       ))}
       {/* Folded loop of strap through the split ring */}
-      <mesh position={[0, 1.28, 0.12]} rotation={[0.55, 0, 0]}>
-        <boxGeometry args={[0.52, 0.5, 0.08]} />
+      <mesh position={[0, 1.28, 0.09]} rotation={[0.5, 0, 0]}>
+        <boxGeometry args={[0.38, 0.42, 0.05]} />
         <meshStandardMaterial color="#0b0b0b" roughness={0.85} />
       </mesh>
     </group>
